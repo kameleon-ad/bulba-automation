@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify
 
+from app.models import Html
+
 html_api_blueprint = Blueprint('html-api', __name__)
 
 

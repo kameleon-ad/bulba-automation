@@ -3,7 +3,7 @@ from flask_cors import CORS
 
 from app.api import api_blueprint
 from app.config import DevelopmentConfig
-from app.extension import SQL_DB
+from app.extension import SQL_DB, DB_MIGRATE
 
 
 def create_app():
@@ -12,6 +12,7 @@ def create_app():
 
     CORS(app)
     SQL_DB.init_app(app)
+    DB_MIGRATE.init_app(app, SQL_DB)
 
     app.register_blueprint(api_blueprint, url_prefix='/api')
 
