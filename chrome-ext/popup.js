@@ -8,14 +8,21 @@ document.getElementById('click-me').addEventListener('click', () => {
 });
 
 function changeBackgroundColor() {
-    console.log(typeof document.body.innerText);
-    fetch("http://localhost:5000/api", {
+    const [instruction, prompt, response_a, response_b] = Array
+        .from(document.getElementsByClassName("MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded"))
+        .map(element => element.innerHTML);
+
+    fetch("http://localhost:5000/api/bulba/openai", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-            html_content: document.documentElement.innerHTML
+            html_content: document.documentElement.innerHTML,
+            instruction,
+            prompt,
+            response_a,
+            response_b,
         }),
         redirect: 'follow'
     })
