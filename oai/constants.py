@@ -36,10 +36,10 @@ def load_example(example_dir: Path):
     user_prompt = convert_to_prompt(user_prompt, "user")
 
     with open(example_dir / "answer.md", "r", encoding="utf-8") as fp:
-        assisstant_prompt = [
+        assistant_prompt = [
             fp.read()
         ]
-    return user_prompt + convert_to_prompt(assisstant_prompt, "assisstant")
+    return user_prompt + convert_to_prompt(assistant_prompt, "assistant")
 
 
 def load_examples(examples_dir: Path):
@@ -66,6 +66,12 @@ ALL_SECTOR_DIRECTIONS = parse_all_sections(
     SECTOR_3_DIRECTIONS,
 )
 
+BASE_PROMPTS = [
+    {
+        "role": "system",
+        "content": "You are a helpful assistant.",
+    },
+]
 SECTOR_1_DIRECTION_PROMPTS = convert_to_prompt(SECTOR_1_DIRECTIONS, "user")
 SECTOR_2_DIRECTION_PROMPTS = convert_to_prompt(SECTOR_2_DIRECTIONS, "user")
 SECTOR_3_DIRECTION_PROMPTS = convert_to_prompt(SECTOR_3_DIRECTIONS, "user")
