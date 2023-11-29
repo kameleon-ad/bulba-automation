@@ -1,0 +1,66 @@
+Response B:
+Class in C++ is the building block that leads to Object-Oriented programming. It is a user-defined data type, which holds its own data members and member functions, which can be accessed and used by creating an instance of that class. A C++ class is like a blueprint of an object.
+
+Here is a simple program that explains how classes work in C++ 20:
+
+```c++
+#include <iostream>
+using namespace std;
+
+class Circle {
+public:
+// Constructor that initializes the radius of the circle
+    Circle(double radius) : radius(radius) {}
+    double get_area() const {
+        return 3.14159 * radius * radius;
+    }
+// Method to calculate the Circumference of the circle
+    double get_circumference() const {
+        return 2 * 3.14159 * radius;
+    }
+private:
+// Private number variable to store the radius of the circle
+    double radius;
+};
+// Main function to demonstrate the usage of the Circle class
+int main() {
+// Creating two Circle objects with different radius
+    Circle c1(5.0);
+    Circle c2(10.0);
+// Printing the area and the circumference of the two circles
+    cout << "Area of c1: " << c1.get_area() << endl;
+    cout << "Area of c2: " << c2.get_area() << endl;
+    cout << "Circumference of c1: " << c1.get_circumference() << endl;
+    cout << "Circumference of c2: " << c2.get_circumference() << endl;
+
+    return 0;
+}
+```
+
+
+In this program, we have a **`Circle`** class that represents a circle. The class has three members: **`radius`**, **`get_area()`**, and **`get_circumference()`**. The **`radius`** member is a private data member that stores the radius of the circle, and the **`get_area()`** and **`get_circumference()`** methods are public member functions that calculate the area and circumference of the circle, respectively.
+
+The **`main()`** function creates two instances of the **`Circle`** class, **`c1`,** and **`c2`**, and passes different radii to their constructors. It then calls the **`get_area()`** and **`get_circumference()`** methods on each instance to print the area and circumference of the corresponding circles.
+
+The output of the program will be:
+
+
+```
+Area of c1: 78.5398
+Area of c2: 314.159
+Circumference of c1: 35.6563
+Circumference of c2: 107.139
+```
+
+
+This program demonstrates the basic principles of object-oriented programming in C++, showcasing how to define a simple class, create instances of the class, and use member functions to perform calculations related to the class's properties. In this case, it calculates the area and circumference of circles based on the provided radii. 
+
+Let's explain how the `Circle` class in the provided program demonstrates the key concepts of classes in C++:
+
+Encapsulation:  The class encapsulates data and functions within a single unit. In the `Circle` class, the data member `radius` is private, which means it can only be accessed within the class. This encapsulation helps in data hiding, preventing external code from directly accessing and modifying the data.
+
+Abstraction: The `Circle` class abstracts the concepts of the circle, providing essential operations without revealing the underlying implementation details. Users of the class need not concern themselves with the internal workings of the `get_area()` and `get_circumference()` methods; they only need to know how to use them.
+
+Member Functions: The class contains the member functions (`get area()` and `get_circumference()` that operate on the class's data members. This member function can access and manipulate the private data of members of the class.
+
+Public and Private Access Specifiers: The `public` and `private` access specifiers control the accessibility of class members. Public members are accessible from outside, while private members are accessible from within the class. In the `Circle` class `get_area()` and `get_circumference()` are public methods accessible outside the class while the `radius` is a private member.
