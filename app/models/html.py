@@ -10,6 +10,11 @@ class Html(SQL_DB.Model):
     problem = SQL_DB.Column(SQL_DB.Boolean, default=True)
     content = SQL_DB.Column(SQL_DB.Text)
 
+    __table_args__ = (
+        SQL_DB.Index('task_id', task_id),
+        SQL_DB.Index('problem', problem),
+    )
+
     def __repr__(self):
         return "<{} for Task-{}>".format(
             "Problem" if self.problem else "Feedback",
