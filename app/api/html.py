@@ -4,6 +4,7 @@ from flask import (
     jsonify,
 )
 
+from app.extension import SQL_DB
 from app.models import Html
 from app.utils import parse_bulba_request, clear_scripts
 
@@ -23,6 +24,11 @@ def retrieve_problems():
 @html_api_blueprint.post("/problem")
 def problem_html_upload():
     task_id, html_content, _, _, _, _ = parse_bulba_request()
+    exists = SQL_DB.session.query(
+        Html.query.filter_by(task_id=task_id, problem=True).exists()
+    ).scalar()
+    if exists:
+        return jsonify({"task_id": f"The problem for task-{task_id} already exists."}), 409
     Html.create(task_id, True, html_content)
     return jsonify({"success": True})
 
