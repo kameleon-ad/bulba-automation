@@ -9,18 +9,25 @@ document.getElementById('upload-feedback').addEventListener('click', () => {
 
 
 function upload_feedback() {
+    const [instruction, prompt, response_a, response_b] = Array
+        .from(document.querySelectorAll('[class*="MuiPaper-root-"], [class*="MuiPaper-elevation1-"], [class*="MuiPaper-rounded-"]'))
+        .map(element => element.innerHTML);
+    
+    const task_id_element = document.querySelectorAll('div > strong + em')[1];
+    const task_id = task_id_element.textContent.trim();
+    
     fetch('http://localhost:5000/api/html/feedback', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-            task_id: '',
+            task_id,
             html_content: document.documentElement.innerHTML,
-            instruction: '',
-            prompt: '',
-            response_a: '',
-            response_b: '',
+            instruction,
+            prompt,
+            response_a,
+            response_b,
         }),
         redirect: 'follow'
     })
