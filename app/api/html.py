@@ -59,4 +59,23 @@ def retrieve_feedbacks():
 @html_api_blueprint.post("/feedbacks")
 def feedback_html_upload():
     task_id, html_content, _, _, _, _ = parse_bulba_request()
+    exists = SQL_DB.session.query(
+        Html.query.filter_by(task_id=task_id, problem=False).exists()
+    ).scalar()
+    if exists:
+        return jsonify({"task_id": f"The feedback for task-{task_id} already exists."}), 409
+    Html.create(task_id, False, html_content)
     return jsonify({"success": True})
+
+
+@html_api_blueprint.get("/feedbacks/<string:task_id>")
+def retrieve_feedback(task_id: str):
+    feedback = Html \
+        .query \
+        .filter_by(task_id=task_id, problem=False) \
+        .with_entities(Html.content) \
+        .first()
+    if not feedback:
+        return jsonify({"status": f"Not able to find the feedback for the task-{task_id}."}), 404
+    html_content, = feedback
+    return Response(clear_scripts(html_content))
