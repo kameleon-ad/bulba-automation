@@ -13,6 +13,7 @@ class Html(SQL_DB.Model):
     __table_args__ = (
         SQL_DB.Index('task_id', task_id),
         SQL_DB.Index('problem', problem),
+        SQL_DB.UniqueConstraint('task_id', 'problem'),
     )
 
     def __repr__(self):
