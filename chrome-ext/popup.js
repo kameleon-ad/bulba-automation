@@ -1,8 +1,8 @@
-document.getElementById('click-me').addEventListener('click', () => {
+document.getElementById('update-problem').addEventListener('click', () => {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         chrome.scripting.executeScript({
             target: {tabId: tabs[0].id},
-            function: upload_problem,
+            function: upload_problem
         });
     });
 });
@@ -15,7 +15,7 @@ function upload_problem() {
     const task_id_element = document.querySelector('div > strong + em');
     const task_id = task_id_element.textContent.trim();
 
-    fetch("http://localhost:5000/api/bulba/openai", {
+    fetch("http://localhost:5000/api/html/problem", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
