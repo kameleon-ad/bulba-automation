@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
 
+from sqlalchemy import Column as BaseColumn
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.extension import SQL_DB
 
 
-class AbstractModel(ABC):
-    @abstractmethod
-    def validate(self, raise_exception=True):
-        pass
+class NoneNullColumn(BaseColumn):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('nullable', False)
+        super().__init__(*args, **kwargs)
 
 
 def create(cls, **kwargs):

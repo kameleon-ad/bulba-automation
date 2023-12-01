@@ -1,11 +1,12 @@
 from app.extension import SQL_DB
 from app.utils import ValidationError
+from app.utils.db import NoneNullColumn
 
 
 class Response(SQL_DB.Model):
-    id = SQL_DB.Column(SQL_DB.Integer, primary_key=True, autoincrement=True)
-    response = SQL_DB.Column(SQL_DB.Text)
-    prompt_id = SQL_DB.Column(SQL_DB.Integer, SQL_DB.ForeignKey('prompt.id'))
+    id = NoneNullColumn(SQL_DB.Integer, primary_key=True, autoincrement=True)
+    response = NoneNullColumn(SQL_DB.Text)
+    prompt_id = NoneNullColumn(SQL_DB.Integer, SQL_DB.ForeignKey('prompt.id'))
 
     prompt = SQL_DB.relationship('Prompt', foreign_keys=[prompt_id])
 

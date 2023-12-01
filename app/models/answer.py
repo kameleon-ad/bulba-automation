@@ -1,12 +1,14 @@
 from app.extension import SQL_DB
 from app.utils import ValidationError
+from app.utils.db import NoneNullColumn
 
 
-class Sample(SQL_DB.Model):
-    id = SQL_DB.Column(SQL_DB.Integer, primary_key=True, autoincrement=True)
-    answer = SQL_DB.Column(SQL_DB.String(32))
-    question_id = SQL_DB.Column(SQL_DB.Integer, SQL_DB.ForeignKey('question.id'))
-    response_id = SQL_DB.Column(SQL_DB.Integer, SQL_DB.ForeignKey('response.id'))
+class Answer(SQL_DB.Model):
+    id = NoneNullColumn(SQL_DB.Integer, primary_key=True, autoincrement=True)
+    answer = NoneNullColumn(SQL_DB.String(32))
+    correct = NoneNullColumn(SQL_DB.Boolean, default=False)
+    question_id = NoneNullColumn(SQL_DB.Integer, SQL_DB.ForeignKey('question.id'))
+    response_id = NoneNullColumn(SQL_DB.Integer, SQL_DB.ForeignKey('response.id'))
 
     def to_dict(self):
         return {

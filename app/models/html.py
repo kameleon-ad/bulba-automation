@@ -1,12 +1,13 @@
 from app.extension import SQL_DB
+from app.utils.db import NoneNullColumn
 from app.utils.exception import ValidationError
 
 
 class Html(SQL_DB.Model):
-    id = SQL_DB.Column(SQL_DB.Integer, primary_key=True, autoincrement=True)
-    problem = SQL_DB.Column(SQL_DB.Boolean, default=True)
-    content = SQL_DB.Column(SQL_DB.Text)
-    mark = SQL_DB.Column(SQL_DB.Integer)
+    id = NoneNullColumn(SQL_DB.Integer, primary_key=True, autoincrement=True)
+    problem = NoneNullColumn(SQL_DB.Boolean, default=True)
+    content = NoneNullColumn(SQL_DB.Text)
+    mark = NoneNullColumn(SQL_DB.Integer)
 
     # __table_args__ = (
     #     SQL_DB.Index('content_index', content),
