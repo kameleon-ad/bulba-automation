@@ -4,7 +4,7 @@ from flask import (
 )
 
 from app.models import Html, Prompt, Response
-from app.utils import parse_bulba_request, clear_scripts
+from app.utils import parse_bulba_request
 from app.utils.db import *
 
 htmls_api_blueprint = Blueprint('htmls-api', __name__)
@@ -15,15 +15,14 @@ def retrieve_problems():
     problems = Html \
         .query \
         .filter_by(problem=True) \
-        .with_entities(Html.task_id) \
         .all()
-    return jsonify([task_id for task_id, in problems])
+    return jsonify([problem.to_dict() for problem in problems])
 
 
 @htmls_api_blueprint.post("/problems")
 def problem_html_upload():
     # noinspection DuplicatedCode
-    task_id, html_content, _, prompt, response_a, response_b = parse_bulba_request()
+    _, html_content, _, prompt, response_a, response_b = parse_bulba_request()
 
     if not exists(Prompt, prompt=prompt):
         create(Prompt, prompt=prompt)
@@ -37,45 +36,41 @@ def problem_html_upload():
         create(Response, response=response_b, prompt_id=prompt_id)
 
     if exists(Html, content=html_content, problem=True):
-        return jsonify({"task_id": f"The problem for task-{task_id} already exists."}), 409
-    create(Html, task_id=task_id, problem=True, content=html_content)
+        return jsonify({"html": f"The problem already exists."}), 409
+    create(Html, problem=True, content=html_content)
 
     return jsonify({"success": True})
 
 
-@htmls_api_blueprint.get("/problems/<string:task_id>")
-def retrieve_problem(task_id: str):
-    problem = Html \
-        .query \
-        .filter_by(task_id=task_id, problem=True) \
-        .with_entities(Html.content) \
-        .first()
-    if not problem:
-        return jsonify({"status": f"Not able to find the problem for the task-{task_id}."}), 404
-    html_content, = problem
-    return Response(clear_scripts(html_content))
+@htmls_api_blueprint.get("/problems/<int:pk>")
+def retrieve_problem(pk: int):
+    html = Html.query.get(pk)
+    if not html:
+        return jsonify({"status": f"Not able to find the Html-{pk}."}), 404
+    if not html.problem:
+        return jsonify({"status": f"The Html-{pk} is not problem."}), 404
+    return html.to_dict()
 
 
-@htmls_api_blueprint.delete("/problems/<string:task_id>")
-def delete_problem(task_id: str):
-    delete(Html, task_id=task_id, problem=True)
+@htmls_api_blueprint.delete("/problems/<string:pk>")
+def delete_problem(pk: str):
+    delete(Html, id=pk)
     return jsonify({})
 
 
 @htmls_api_blueprint.get("/feedbacks")
 def retrieve_feedbacks():
-    problems = Html \
+    feedbacks = Html \
         .query \
         .filter_by(problem=False) \
-        .with_entities(Html.task_id) \
         .all()
-    return jsonify([task_id for task_id, in problems])
+    return jsonify([feedback.to_dict() for feedback in feedbacks])
 
 
 @htmls_api_blueprint.post("/feedbacks")
 def feedback_html_upload():
     # noinspection DuplicatedCode
-    task_id, html_content, _, prompt, response_a, response_b = parse_bulba_request()
+    _, html_content, _, prompt, response_a, response_b = parse_bulba_request()
 
     if not exists(Prompt, prompt=prompt):
         create(Prompt, prompt=prompt)
@@ -89,20 +84,17 @@ def feedback_html_upload():
         create(Response, response=response_b, prompt_id=prompt_id)
 
     if exists(Html, content=html_content, problem=False):
-        return jsonify({"task_id": f"The feedback for task-{task_id} already exists."}), 409
-    create(Html, task_id=task_id, problem=False, content=html_content)
+        return jsonify({"html": "The feedback already exists."}), 409
+    create(Html, problem=False, content=html_content)
 
     return jsonify({"success": True})
 
 
-@htmls_api_blueprint.get("/feedbacks/<string:task_id>")
-def retrieve_feedback(task_id: str):
-    feedback = Html \
-        .query \
-        .filter_by(task_id=task_id, problem=False) \
-        .with_entities(Html.content) \
-        .first()
-    if not feedback:
-        return jsonify({"status": f"Not able to find the feedback for the task-{task_id}."}), 404
-    html_content, = feedback
-    return Response(clear_scripts(html_content))
+@htmls_api_blueprint.get("/feedbacks/<int:pk>")
+def retrieve_feedback(pk: int):
+    html = Html.query.get(pk)
+    if not html:
+        return jsonify({"status": f"Not able to find the Html-{pk}."}), 404
+    if html.problem:
+        return jsonify({"status": f"The Html-{pk} is not a feedback."}), 404
+    return jsonify(html.to_dict())
