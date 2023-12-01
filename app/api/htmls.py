@@ -8,10 +8,10 @@ from app.extension import SQL_DB
 from app.models import Html
 from app.utils import parse_bulba_request, clear_scripts
 
-html_api_blueprint = Blueprint('html-api', __name__)
+htmls_api_blueprint = Blueprint('htmls-api', __name__)
 
 
-@html_api_blueprint.get("/problems")
+@htmls_api_blueprint.get("/problems")
 def retrieve_problems():
     problems = Html \
         .query \
@@ -21,7 +21,7 @@ def retrieve_problems():
     return jsonify([task_id for task_id, in problems])
 
 
-@html_api_blueprint.post("/problems")
+@htmls_api_blueprint.post("/problems")
 def problem_html_upload():
     task_id, html_content, _, _, _, _ = parse_bulba_request()
     exists = SQL_DB.session.query(
@@ -33,7 +33,7 @@ def problem_html_upload():
     return jsonify({"success": True})
 
 
-@html_api_blueprint.get("/problems/<string:task_id>")
+@htmls_api_blueprint.get("/problems/<string:task_id>")
 def retrieve_problem(task_id: str):
     problem = Html \
         .query \
@@ -46,7 +46,7 @@ def retrieve_problem(task_id: str):
     return Response(clear_scripts(html_content))
 
 
-@html_api_blueprint.get("/feedbacks")
+@htmls_api_blueprint.get("/feedbacks")
 def retrieve_feedbacks():
     problems = Html \
         .query \
@@ -56,7 +56,7 @@ def retrieve_feedbacks():
     return jsonify([task_id for task_id, in problems])
 
 
-@html_api_blueprint.post("/feedbacks")
+@htmls_api_blueprint.post("/feedbacks")
 def feedback_html_upload():
     task_id, html_content, _, _, _, _ = parse_bulba_request()
     exists = SQL_DB.session.query(
@@ -68,7 +68,7 @@ def feedback_html_upload():
     return jsonify({"success": True})
 
 
-@html_api_blueprint.get("/feedbacks/<string:task_id>")
+@htmls_api_blueprint.get("/feedbacks/<string:task_id>")
 def retrieve_feedback(task_id: str):
     feedback = Html \
         .query \
