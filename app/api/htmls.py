@@ -1,5 +1,6 @@
 from flask import (
     Blueprint,
+    Response as Flask_Response,
     jsonify,
 )
 
@@ -52,6 +53,16 @@ def retrieve_problem(pk: int):
     return html.to_dict()
 
 
+@htmls_api_blueprint.get("/problems/<int:pk>/view")
+def view_problem(pk: int):
+    html = Html.query.get(pk)
+    if not html:
+        return jsonify({"status": f"Not able to find the Html-{pk}."}), 404
+    if not html.problem:
+        return jsonify({"status": f"The Html-{pk} is not problem."}), 404
+    return Flask_Response(html.content)
+
+
 @htmls_api_blueprint.delete("/problems/<string:pk>")
 def delete_problem(pk: str):
     delete(Html, id=pk)
@@ -98,3 +109,21 @@ def retrieve_feedback(pk: int):
     if html.problem:
         return jsonify({"status": f"The Html-{pk} is not a feedback."}), 404
     return jsonify(html.to_dict())
+
+
+@htmls_api_blueprint.get("/feedbacks/<int:pk>/view")
+def view_feedback(pk: int):
+    html = Html.query.get(pk)
+    if not html:
+        return jsonify({"status": f"Not able to find the Html-{pk}."}), 404
+    if html.problem:
+        return jsonify({"status": f"The Html-{pk} is not a feedback."}), 404
+    return Flask_Response(html.content)
+
+
+@htmls_api_blueprint.get("/-/<int:pk>/view")
+def view_html(pk: int):
+    html = Html.query.get(pk)
+    if not html:
+        return jsonify({"status": f"Not able to find the Html-{pk}."}), 404
+    return Flask_Response(html.content)

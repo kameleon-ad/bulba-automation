@@ -27,4 +27,6 @@ def create_response():
 @responses_api_blueprint.get('/<int:rid>')
 def retrieve_response(rid: int):
     response = Response.query.get(rid)
+    if not response:
+        return jsonify({"response": f"There is not any response with id-{rid}"}), 404
     return jsonify(response.to_dict())

@@ -6,6 +6,7 @@ class Html(SQL_DB.Model):
     id = SQL_DB.Column(SQL_DB.Integer, primary_key=True, autoincrement=True)
     problem = SQL_DB.Column(SQL_DB.Boolean, default=True)
     content = SQL_DB.Column(SQL_DB.Text)
+    mark = SQL_DB.Column(SQL_DB.Integer)
 
     # __table_args__ = (
     #     SQL_DB.Index('content_index', content),
@@ -20,6 +21,7 @@ class Html(SQL_DB.Model):
             "id": self.id,
             "problem": self.problem,
             "content": self.content,
+            "mark": self.mark,
         }
 
     def validate(self, raise_exception: bool = False):
