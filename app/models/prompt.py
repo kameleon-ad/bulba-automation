@@ -6,8 +6,7 @@ from app.utils.exception import ValidationError
 
 class Prompt(SQL_DB.Model):
     id = SQL_DB.Column(SQL_DB.Integer, primary_key=True, autoincrement=True)
-    prompt = SQL_DB.Column(SQL_DB.String)
-    # samples = SQL_DB.relationship('Sample', backref='prompt', lazy=True)
+    prompt = SQL_DB.Column(SQL_DB.Text)
 
     __table_args__ = (
         SQL_DB.Index('prompt_index', prompt),

@@ -23,11 +23,8 @@ def retrieve_problems():
 
 @htmls_api_blueprint.post("/problems")
 def problem_html_upload():
-    task_id, html_content, _, _, _, _ = parse_bulba_request()
-    exists = SQL_DB.session.query(
-        Html.query.filter_by(task_id=task_id, problem=True).exists()
-    ).scalar()
-    if exists:
+    task_id, html_content, _, prompt, _, _ = parse_bulba_request()
+    if Html.exists(task_id=task_id, problem=True):
         return jsonify({"task_id": f"The problem for task-{task_id} already exists."}), 409
     Html.create(task_id, True, html_content)
     return jsonify({"success": True})
@@ -44,6 +41,12 @@ def retrieve_problem(task_id: str):
         return jsonify({"status": f"Not able to find the problem for the task-{task_id}."}), 404
     html_content, = problem
     return Response(clear_scripts(html_content))
+
+
+@htmls_api_blueprint.delete("/problems/<string:task_id>")
+def delete_problem(task_id: str):
+    Html.delete(task_id=task_id, problem=True)
+    return jsonify({})
 
 
 @htmls_api_blueprint.get("/feedbacks")

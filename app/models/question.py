@@ -8,7 +8,6 @@ class Question(SQL_DB.Model):
     id = SQL_DB.Column(SQL_DB.Integer, primary_key=True, autoincrement=True)
     question = SQL_DB.Column(SQL_DB.String(100))
     instruction = SQL_DB.Column(SQL_DB.Text)
-    # samples = SQL_DB.relationship('Sample', backref='question', lazy=True)
 
     __table_args__ = (
         SQL_DB.Index('question_index', question),

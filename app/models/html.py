@@ -45,3 +45,25 @@ class Html(SQL_DB.Model):
             SQL_DB.session.rollback()
             raise
         return html_item
+
+    @classmethod
+    def delete(cls, **kwargs):
+        html_item = cls.query.filter_by(**kwargs).first()
+
+        if not html_item:
+            return
+
+        try:
+            SQL_DB.session.delete(html_item)
+            SQL_DB.session.commit()
+        except SQLAlchemyError:
+            SQL_DB.session.rollback()
+            raise
+
+    @classmethod
+    def exists(cls, **kwargs) -> bool:
+        exists = SQL_DB.session.query(
+            cls.query.filter_by(**kwargs).exists()
+        ).scalar()
+        return not not exists
+

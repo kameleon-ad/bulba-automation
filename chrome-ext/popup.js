@@ -16,7 +16,7 @@ function upload_feedback() {
     const task_id_element = document.querySelectorAll('div > strong + em')[1];
     const task_id = task_id_element.textContent.trim();
     
-    fetch('http://localhost:5000/api/html/feedbacks', {
+    fetch('http://localhost:5000/api/htmls/feedbacks', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -58,7 +58,7 @@ function upload_problem() {
     const task_id_element = document.querySelector('div > strong + em');
     const task_id = task_id_element.textContent.trim();
 
-    fetch('http://localhost:5000/api/html/problems', {
+    fetch('http://localhost:5000/api/htmls/problems', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
