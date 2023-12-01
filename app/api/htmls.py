@@ -30,11 +30,11 @@ def problem_html_upload():
 
     prompt_id = Prompt.query.filter_by(prompt=prompt).first().id
 
-    if not exists(Response, response=response_a, prompt=prompt_id):
-        create(Response, response=response_a, prompt=prompt_id)
+    if not exists(Response, response=response_a, prompt_id=prompt_id):
+        create(Response, response=response_a, prompt_id=prompt_id)
 
-    if not exists(Response, response=response_b, prompt=prompt_id):
-        create(Response, response=response_b, prompt=prompt_id)
+    if not exists(Response, response=response_b, prompt_id=prompt_id):
+        create(Response, response=response_b, prompt_id=prompt_id)
 
     if exists(Html, task_id=task_id, problem=True):
         return jsonify({"task_id": f"The problem for task-{task_id} already exists."}), 409
@@ -82,11 +82,11 @@ def feedback_html_upload():
 
     prompt_id = Prompt.query.filter_by(prompt=prompt).first().id
 
-    if not exists(Response, response=response_a, prompt=prompt_id):
-        create(Response, response=response_a, prompt=prompt_id)
+    if not exists(Response, response=response_a, prompt_id=prompt_id):
+        create(Response, response=response_a, prompt_id=prompt_id)
 
-    if not exists(Response, response=response_b, prompt=prompt_id):
-        create(Response, response=response_b, prompt=prompt_id)
+    if not exists(Response, response=response_b, prompt_id=prompt_id):
+        create(Response, response=response_b, prompt_id=prompt_id)
 
     if exists(Html, task_id=task_id, problem=False):
         return jsonify({"task_id": f"The feedback for task-{task_id} already exists."}), 409

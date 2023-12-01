@@ -8,10 +8,7 @@ prompts_api_blueprint = Blueprint('prompts-api', __name__)
 
 @prompts_api_blueprint.get('')
 def retrieve_prompts():
-    prompts = [
-        {'id': pid, 'prompt': prompt}
-        for pid, prompt in Prompt.query.with_entities(Prompt.id, Prompt.prompt).all()
-    ]
+    prompts = [prompt.to_dict() for prompt in Prompt.query.all()]
     return jsonify(prompts)
 
 

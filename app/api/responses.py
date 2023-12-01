@@ -17,10 +17,10 @@ def create_response():
     response = request.form.get('response')
     prompt = request.form.get('prompt')
 
-    if exists(Response, response=response, prompt=prompt):
+    if exists(Response, response=response, prompt_id=prompt):
         return jsonify({'response': f'The response already exists.'}), 409
 
-    create(Response, response=response, prompt=prompt)
+    create(Response, response=response, prompt_id=prompt)
     return {'success': True}
 
 
