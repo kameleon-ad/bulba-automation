@@ -1,4 +1,5 @@
 from app.extension import SQL_DB
+from app.utils import ValidationError
 
 
 class Sample(SQL_DB.Model):
@@ -16,4 +17,15 @@ class Sample(SQL_DB.Model):
         }
 
     def validate(self, raise_exception: bool = False):
-        pass
+        errors = {}
+        if self.question is None:
+            errors["question"] = "Question cannot be empty."
+        if self.response is None:
+            errors["response"] = "Response cannot be empty."
+        if not self.answer:
+            errors["answer"] = "Answer cannot be empty."
+
+        if raise_exception and errors:
+            raise ValidationError(errors)
+
+        return errors
