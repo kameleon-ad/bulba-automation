@@ -1,17 +1,14 @@
 from flask import Blueprint, jsonify, request
 
-from app.extension import SQL_DB
 from app.models import Question
+from app.utils.db import *
 
 questions_api_blueprint = Blueprint('questions-api', __name__)
 
 
 @questions_api_blueprint.get('')
 def retrieve_questions():
-    questions = [
-        {'id': qid, 'question': question}
-        for qid, question in Question.query.with_entities(Question.id, Question.question).all()
-    ]
+    questions = [question.to_dict() for question in Question.query.all()]
     return jsonify(questions)
 
 
@@ -19,11 +16,10 @@ def retrieve_questions():
 def create_question():
     question = request.form.get('question')
     instruction = request.form.get('instruction')
-    exists = SQL_DB.session.query(
-        Question.query.filter_by(question=question).exists()
-    ).scalar()
-    if exists:
+
+    if exists(Question, question=question):
         return jsonify({'question': f'The question already exists.'}), 409
+
     Question.create(question, instruction)
     return {'success': True}
 

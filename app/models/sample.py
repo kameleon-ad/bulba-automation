@@ -15,5 +15,5 @@ class Sample(SQL_DB.Model):
             "answer": self.answer,
         }
 
-    def validate(self):
+    def validate(self, raise_exception: bool = False):
         pass

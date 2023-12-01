@@ -19,7 +19,7 @@ class Question(SQL_DB.Model):
             "instruction": self.instruction,
         }
 
-    def validate(self, raise_exception=False):
+    def validate(self, raise_exception: bool = False):
         errors = {}
         if not self.question:
             errors["question"] = "Question cannot be empty."

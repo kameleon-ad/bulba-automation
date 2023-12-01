@@ -1,10 +1,9 @@
 from flask import (
     Blueprint,
-    Response,
     jsonify,
 )
 
-from app.models import Html, Prompt
+from app.models import Html, Prompt, Response
 from app.utils import parse_bulba_request, clear_scripts
 from app.utils.db import *
 
@@ -23,10 +22,19 @@ def retrieve_problems():
 
 @htmls_api_blueprint.post("/problems")
 def problem_html_upload():
-    task_id, html_content, _, prompt, _, _ = parse_bulba_request()
+    # noinspection DuplicatedCode
+    task_id, html_content, _, prompt, response_a, response_b = parse_bulba_request()
 
     if not exists(Prompt, prompt=prompt):
         create(Prompt, prompt=prompt)
+
+    prompt_id = Prompt.query.filter_by(prompt=prompt).first().id
+
+    if not exists(Response, response=response_a, prompt=prompt_id):
+        create(Response, response=response_a, prompt=prompt_id)
+
+    if not exists(Response, response=response_b, prompt=prompt_id):
+        create(Response, response=response_b, prompt=prompt_id)
 
     if exists(Html, task_id=task_id, problem=True):
         return jsonify({"task_id": f"The problem for task-{task_id} already exists."}), 409
@@ -66,10 +74,19 @@ def retrieve_feedbacks():
 
 @htmls_api_blueprint.post("/feedbacks")
 def feedback_html_upload():
-    task_id, html_content, _, prompt, _, _ = parse_bulba_request()
+    # noinspection DuplicatedCode
+    task_id, html_content, _, prompt, response_a, response_b = parse_bulba_request()
 
     if not exists(Prompt, prompt=prompt):
         create(Prompt, prompt=prompt)
+
+    prompt_id = Prompt.query.filter_by(prompt=prompt).first().id
+
+    if not exists(Response, response=response_a, prompt=prompt_id):
+        create(Response, response=response_a, prompt=prompt_id)
+
+    if not exists(Response, response=response_b, prompt=prompt_id):
+        create(Response, response=response_b, prompt=prompt_id)
 
     if exists(Html, task_id=task_id, problem=False):
         return jsonify({"task_id": f"The feedback for task-{task_id} already exists."}), 409

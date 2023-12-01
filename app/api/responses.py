@@ -1,17 +1,14 @@
 from flask import Blueprint, jsonify, request
 
-from app.extension import SQL_DB
 from app.models import Response
+from app.utils.db import *
 
 responses_api_blueprint = Blueprint('responses-api', __name__)
 
 
 @responses_api_blueprint.get('')
 def retrieve_responses():
-    responses = [
-        {'id': rid, 'response': response}
-        for rid, response in Response.query.with_entities(Response.id, Response.response).all()
-    ]
+    responses = [response.to_dict() for response in Response.query.all()]
     return jsonify(responses)
 
 
@@ -19,12 +16,11 @@ def retrieve_responses():
 def create_response():
     response = request.form.get('response')
     prompt = request.form.get('prompt')
-    exists = SQL_DB.session.query(
-        Response.query.filter_by(response=response).exists()
-    ).scalar()
-    if exists:
+
+    if exists(Response, response=response, prompt=prompt):
         return jsonify({'response': f'The response already exists.'}), 409
-    Response.create(response, prompt)
+
+    create(Response, response=response, prompt=prompt)
     return {'success': True}
 
 

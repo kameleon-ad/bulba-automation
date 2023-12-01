@@ -28,7 +28,7 @@ class Html(SQL_DB.Model):
             "content": self.content,
         }
 
-    def validate(self, raise_exception=False):
+    def validate(self, raise_exception: bool = False):
         errors = {}
         if not self.task_id:
             errors["task_id"] = "Task ID cannot be empty."

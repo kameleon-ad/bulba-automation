@@ -13,5 +13,5 @@ class Response(SQL_DB.Model):
             "prompt": self.prompt,
         }
 
-    def validate(self):
+    def validate(self, raise_exception: bool = False):
         pass

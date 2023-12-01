@@ -17,7 +17,7 @@ class Prompt(SQL_DB.Model):
             "prompt": self.prompt,
         }
 
-    def validate(self, raise_exception=False):
+    def validate(self, raise_exception: bool = False):
         errors = {}
         if not self.prompt:
             errors["prompt"] = "Question cannot be empty."
