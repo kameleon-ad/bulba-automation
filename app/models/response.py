@@ -7,11 +7,13 @@ class Response(SQL_DB.Model):
     response = SQL_DB.Column(SQL_DB.Text)
     prompt_id = SQL_DB.Column(SQL_DB.Integer, SQL_DB.ForeignKey('prompt.id'))
 
+    prompt = SQL_DB.relationship('Prompt', foreign_keys=[prompt_id])
+
     def to_dict(self):
         return {
             "id": self.id,
             "response": self.response,
-            "prompt_id": self.prompt_id,
+            "prompt": self.prompt.to_dict(),
         }
 
     def validate(self, raise_exception: bool = False):
