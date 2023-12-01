@@ -1,5 +1,3 @@
-from sqlalchemy.exc import SQLAlchemyError
-
 from app.extension import SQL_DB
 from app.utils.exception import ValidationError
 
@@ -32,15 +30,3 @@ class Question(SQL_DB.Model):
             raise ValidationError(errors)
 
         return errors
-
-    @classmethod
-    def create(cls, question: str, instruction: str):
-        html_item = cls(question=question, instruction=instruction)
-        html_item.validate(raise_exception=True)
-        try:
-            SQL_DB.session.add(html_item)
-            SQL_DB.session.commit()
-        except SQLAlchemyError:
-            SQL_DB.session.rollback()
-            raise
-        return html_item
