@@ -1,5 +1,3 @@
-from abc import ABC, abstractmethod
-
 from sqlalchemy import Column as BaseColumn
 from sqlalchemy.exc import SQLAlchemyError
 
