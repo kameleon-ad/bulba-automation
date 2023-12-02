@@ -1,22 +1,34 @@
-document.getElementById('upload-feedback').addEventListener('click', () => {
+document.getElementById('upload').addEventListener('click', () => {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         chrome.scripting.executeScript({
             target: {tabId: tabs[0].id},
-            function: upload_feedback,
+            function: upload,
         });
     });
 });
 
 
-function upload_feedback() {
-    const [instruction, prompt, response_a, response_b] = Array
+function upload() {
+    let [instruction, prompt, response_a, response_b] = Array
         .from(document.querySelectorAll('[class*="MuiPaper-root-"], [class*="MuiPaper-elevation1-"], [class*="MuiPaper-rounded-"]'))
         .map(element => element.innerHTML);
+    let upload_url = 'http://localhost:5000/api/htmls/feedbacks';
+    let task_id;
     
-    const task_id_element = document.querySelectorAll('div > strong + em')[1];
-    const task_id = task_id_element.textContent.trim();
+    if (!instruction) {
+        [instruction, prompt, response_a, response_b] = Array
+            .from(document.getElementsByClassName('MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded'))
+            .map(element => element.innerHTML);
+        upload_url = 'http://localhost:5000/api/htmls/problems';
+        const task_id_element = document.querySelector('div > strong + em');
+        task_id = task_id_element.textContent.trim();
+    } else {
+        const task_id_element = document.querySelectorAll('div > strong + em')[1];
+        task_id = task_id_element.textContent.trim();
+    }
+    console.log(instruction, prompt, response_a, response_b);
     
-    fetch('http://localhost:5000/api/htmls/feedbacks', {
+    fetch(upload_url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -33,51 +45,10 @@ function upload_feedback() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
+        alert("success");
     })
     .catch(error => {
-        console.error('Error', error);
-    });
-}
-
-
-document.getElementById('upload-problem').addEventListener('click', () => {
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        chrome.scripting.executeScript({
-            target: {tabId: tabs[0].id},
-            function: upload_problem,
-        });
-    });
-});
-
-function upload_problem() {
-    const [instruction, prompt, response_a, response_b] = Array
-        .from(document.getElementsByClassName('MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded'))
-        .map(element => element.innerHTML);
-    
-    const task_id_element = document.querySelector('div > strong + em');
-    const task_id = task_id_element.textContent.trim();
-
-    fetch('http://localhost:5000/api/htmls/problems', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            task_id,
-            html_content: document.documentElement.innerHTML,
-            instruction,
-            prompt,
-            response_a,
-            response_b,
-        }),
-        redirect: 'follow'
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => {
-        console.error('Error', error);
+        alert("error");
+        console.log(error);
     });
 }

@@ -7,7 +7,7 @@ class Html(SQL_DB.Model):
     id = NoneNullColumn(SQL_DB.Integer, primary_key=True, autoincrement=True)
     problem = NoneNullColumn(SQL_DB.Boolean, default=True)
     content = NoneNullColumn(SQL_DB.Text)
-    mark = NoneNullColumn(SQL_DB.Integer)
+    mark = NoneNullColumn(SQL_DB.Integer, default=0.0)
 
     # __table_args__ = (
     #     SQL_DB.Index('content_index', content),

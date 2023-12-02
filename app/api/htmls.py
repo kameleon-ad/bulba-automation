@@ -5,8 +5,9 @@ from flask import (
 )
 
 from app.models import Html, Prompt, Response
-from app.utils import parse_bulba_request
+from app.utils import parse_bulba_request, clear_scripts
 from app.utils.db import *
+from app.utils.string import strip_response, strip_prompt
 
 htmls_api_blueprint = Blueprint('htmls-api', __name__)
 
@@ -24,6 +25,8 @@ def retrieve_problems():
 def problem_html_upload():
     # noinspection DuplicatedCode
     _, html_content, _, prompt, response_a, response_b = parse_bulba_request()
+    prompt = strip_prompt(prompt)
+    response_a, response_b = strip_response(response_a), strip_response(response_b)
 
     if not exists(Prompt, prompt=prompt):
         create(Prompt, prompt=prompt)
@@ -75,13 +78,15 @@ def retrieve_feedbacks():
         .query \
         .filter_by(problem=False) \
         .all()
-    return jsonify([feedback.to_dict() for feedback in feedbacks])
+    return jsonify([feedback.id for feedback in feedbacks])
 
 
 @htmls_api_blueprint.post("/feedbacks")
 def feedback_html_upload():
     # noinspection DuplicatedCode
     _, html_content, _, prompt, response_a, response_b = parse_bulba_request()
+    prompt = strip_prompt(prompt)
+    response_a, response_b = strip_response(response_a), strip_response(response_b)
 
     if not exists(Prompt, prompt=prompt):
         create(Prompt, prompt=prompt)
@@ -127,3 +132,11 @@ def view_html(pk: int):
     if not html:
         return jsonify({"status": f"Not able to find the Html-{pk}."}), 404
     return Flask_Response(html.content)
+
+
+@htmls_api_blueprint.get("/-/<int:pk>/view-strip")
+def strip_view_html(pk: int):
+    html = Html.query.get(pk)
+    if not html:
+        return jsonify({"status": f"Not able to find the Html-{pk}."}), 404
+    return Flask_Response(clear_scripts(html.content))
