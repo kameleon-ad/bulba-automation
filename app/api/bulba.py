@@ -85,7 +85,8 @@ def bulba_answer(qid: int, pos: int):
             },
             {
                 "role": "user",
-                "content": "Which type of issues in the above response?",
+                "content": "Which type of issues in the above response? The prompt is not important. It is important "
+                           "how the response is fit for the questions I gave you at first with the instruction",
             },
             {
                 "role": "assistant",
@@ -111,7 +112,8 @@ def bulba_answer(qid: int, pos: int):
         },
         {
             "role": "user",
-            "content": "Which type of issues in the above response?",
+            "content": "Which type of issues in the above response? The prompt is not important. It is important how "
+                       "the response is fit for the questions I gave you at first with the instruction",
         },
         {
             "role": "user",
