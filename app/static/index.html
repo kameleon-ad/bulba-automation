@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
 </head>
 <body>
 <label for="id-question">Question</label><input type="text" id="id-question">
@@ -10,7 +12,9 @@
 <button id="submit">Submit</button>
 <div id="question"></div>
 <div id="prompt"></div>
+<h1>Response</h1>
 <div id="response"></div>
+<h1>GPT</h1>
 <div id="gpt"></div>
 <script>
     const question_id_ele = document.getElementById("id-question");
@@ -19,16 +23,21 @@
     const prompt_ele = document.getElementById("prompt")
     const response_ele = document.getElementById("response");
     const gpt_ele = document.getElementById("gpt")
+    const converter = new showdown.Converter();
+
     document.getElementById("submit").addEventListener("click", () => {
         fetch(`http://localhost:5000/api/bulba/${question_id_ele.value}/${position_ele.value}`, {method: 'GET'})
             .then(res => res.json())
             .then(({question, prompt, response, gpt}) => {
-                question_ele.innerText = question;
-                prompt_ele.innerText = prompt;
-                response_ele.innerText = response;
+                question_ele.innerHTML = converter.makeHtml(question);
+                prompt_ele.innerHTML = converter.makeHtml(prompt);
+                response_ele.innerHTML = converter.makeHtml(response);
                 gpt_ele.innerText = gpt;
             })
     })
 </script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.9.2/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
