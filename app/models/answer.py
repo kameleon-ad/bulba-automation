@@ -10,12 +10,15 @@ class Answer(SQL_DB.Model):
     question_id = NoneNullColumn(SQL_DB.Integer, SQL_DB.ForeignKey('question.id'))
     response_id = NoneNullColumn(SQL_DB.Integer, SQL_DB.ForeignKey('response.id'))
 
+    question = SQL_DB.relationship('Question', foreign_keys=[question_id])
+    response = SQL_DB.relationship('Response', foreign_keys=[response_id])
+
     def to_dict(self):
         return {
             "id": self.id,
             "answer": self.answer,
-            "response_id": self.question_id,
-            "prompt_id": self.response_id,
+            "question": self.question.to_dict(),
+            "response": self.response.to_dict(),
         }
 
     def validate(self, raise_exception: bool = False):

@@ -5,6 +5,30 @@
     <title>Title</title>
 </head>
 <body>
-
+<label for="id-question">Question</label><input type="text" id="id-question">
+<label for="position">Position</label><input type="text" id="position">
+<button id="submit">Submit</button>
+<div id="question"></div>
+<div id="prompt"></div>
+<div id="response"></div>
+<div id="gpt"></div>
+<script>
+    const question_id_ele = document.getElementById("id-question");
+    const position_ele = document.getElementById("position")
+    const question_ele = document.getElementById("question");
+    const prompt_ele = document.getElementById("prompt")
+    const response_ele = document.getElementById("response");
+    const gpt_ele = document.getElementById("gpt")
+    document.getElementById("submit").addEventListener("click", () => {
+        fetch(`http://localhost:5000/api/bulba/${question_id_ele.value}/${position_ele.value}`, {method: 'GET'})
+            .then(res => res.json())
+            .then(({question, prompt, response, gpt}) => {
+                question_ele.innerText = question;
+                prompt_ele.innerText = prompt;
+                response_ele.innerText = response;
+                gpt_ele.innerText = gpt;
+            })
+    })
+</script>
 </body>
 </html>
