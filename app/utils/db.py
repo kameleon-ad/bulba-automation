@@ -5,6 +5,8 @@ from app.extension import SQL_DB
 
 
 class NoneNullColumn(BaseColumn):
+    inherit_cache = True
+
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('nullable', False)
         super().__init__(*args, **kwargs)
