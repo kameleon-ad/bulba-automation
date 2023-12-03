@@ -22,6 +22,13 @@ def create(cls, **kwargs):
     return item
 
 
+def get_create(cls, **kwargs):
+    item = cls.query.filter_by(**kwargs).first()
+    if item:
+        return item
+    return create(cls, **kwargs)
+
+
 def delete(cls, **kwargs):
     html_item = cls.query.filter_by(**kwargs).first()
 
@@ -37,13 +44,15 @@ def delete(cls, **kwargs):
 
 
 def exists(cls, **kwargs) -> bool:
-    return not not SQL_DB.session.query(
-        cls.query.filter_by(**kwargs).exists()
-    ).scalar()
+    query = cls.query.filter_by(**kwargs).exists()
+    result = SQL_DB.session.query(query)
+    scalar = result.scalar()
+    return not not scalar
 
 
 __all__ = [
     'create',
+    'get_create',
     'delete',
     'exists',
 ]

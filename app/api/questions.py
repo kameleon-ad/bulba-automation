@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 
 from app.models import Question
 from app.utils.db import *
+from app.utils.string import normalize_question
 
 questions_api_blueprint = Blueprint('questions-api', __name__)
 
@@ -15,12 +16,13 @@ def retrieve_questions():
 @questions_api_blueprint.post('')
 def create_question():
     question = request.form.get('question')
-    instruction = request.form.get('instruction')
+    instruction = request.form.get('instruction', '')
+    question = normalize_question(question)
 
     if exists(Question, question=question):
         return jsonify({'question': f'The question already exists.'}), 409
 
-    Question.create(question, instruction)
+    create(Question, question=question, instruction=instruction)
     return {'success': True}
 
 

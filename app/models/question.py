@@ -5,7 +5,7 @@ from app.utils.exception import ValidationError
 
 class Question(SQL_DB.Model):
     id = NoneNullColumn(SQL_DB.Integer, primary_key=True, autoincrement=True)
-    question = NoneNullColumn(SQL_DB.String(100))
+    question = NoneNullColumn(SQL_DB.String(128))
     instruction = NoneNullColumn(SQL_DB.Text)
 
     __table_args__ = (
@@ -24,7 +24,7 @@ class Question(SQL_DB.Model):
         errors = {}
         if not self.question:
             errors["question"] = "Question cannot be empty."
-        if not self.instruction:
+        if self.instruction is None :
             errors["instruction"] = "Instruction cannot be empty."
 
         if raise_exception and errors:
