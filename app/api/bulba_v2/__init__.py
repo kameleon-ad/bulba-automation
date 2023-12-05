@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from app.utils import parse_html_to_md
+from app.utils.v2.oai import category
 
 bulba_v2_api_blueprint = Blueprint('bulba_v2_api', __name__)
 
@@ -11,4 +12,6 @@ def bulba_v2_determine():
         parse_html_to_md(request.form.get(key))
         for key in ['prompt', 'response_a', 'response_b']
     ]
-    return jsonify(request.form.keys())
+    return jsonify({
+        "category": category(prompt),
+    })
