@@ -82,6 +82,9 @@ ALL_SECTOR_DIRECTION_PROMPTS = parse_all_sections(
 )
 EXAMPLE_PROMPTS = load_examples(EXAMPLE_HOME)
 DEFAULT_PROMPTS = ALL_SECTOR_DIRECTION_PROMPTS + EXAMPLE_PROMPTS
+BASE_STATEMENT = 'From now, I\'ll give you several pairs of one prompt and one response. Please determine how the ' \
+                 'response is fit for the prompt. Evaluate base on the instruction. The question is the one I give ' \
+                 'you at first before the instruction'
 
 
 __all__ = [
