@@ -30,7 +30,7 @@ document.getElementById('solve').addEventListener('click', () => {
 
 function solve() {
     let [_, prompt, response_a, response_b] = Array
-        .from(document.querySelectorAll('[class*="MuiPaper-root-"], [class*="MuiPaper-elevation1-"], [class*="MuiPaper-rounded-"]'))
+        .from(document.getElementsByClassName('MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded'))
         .map(element => element.innerHTML);
     let api_link = 'http://localhost:5000/api/bulba_v2';
 
