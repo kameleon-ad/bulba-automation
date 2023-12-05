@@ -18,14 +18,14 @@ document.getElementById('solve').addEventListener('click', () => {
 });
 
 
-document.getElementById('upload-problem').addEventListener('click', () => {
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        chrome.scripting.executeScript({
-            target: {tabId: tabs[0].id},
-            function: extract_question_region,
-        });
-    });
-});
+// document.getElementById('upload-problem').addEventListener('click', () => {
+//     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+//         chrome.scripting.executeScript({
+//             target: {tabId: tabs[0].id},
+//             function: extract_question_region,
+//         });
+//     });
+// });
 
 
 function solve() {
