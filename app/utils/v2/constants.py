@@ -3,6 +3,18 @@ BASIC_MESSAGES = [
 ]
 
 
+CODE_RELATED_STATEMENT = """
+# Is the Prompt Code-Related?
+
+Focus on whether the response is relevant to a coding context.
+
+Use the following rubric:
+
+| Option       | Description                                                                                     | Explanation        |
+|--------------|-------------------------------------------------------------------------------------------------|--------------------|
+| Yes          | The prompt pertains to code, including written code or questions about code generation, modification, conversion, debugging, etc. | Not required       |
+| No           | The prompt does not relate to coding. It may involve: <ul><li>Any incomplete or ambiguous prompts.</li><li>Questions about data analysis.</li><li>Questions about computer software (excluding CLI).</li><li>Questions about IT, networking, or computer security without an explicit request for code.</li><li>Questions about math, statistics, physics, logic, or reasoning.</li><li>Any other non-coding topics.</li><li>Prompts not entirely in English.</li></ul> | Required if issues are found. Describe what aspects of the prompt are non-code related. |
+"""
 CATEGORY_STATEMENT = """
 #  Selecting The Category For The Code Related Prompt
 
@@ -24,10 +36,43 @@ What is the code use case this prompt falls under? (Only if the prompt is code r
 | Code Recommendations  | Provide recommendations on which libraries or programming patterns to use   | What is the best library in python for hierarchical DBSCAN?   |
 | Data Conversion   | Convert from one data format to another. | [    {        id: 1,        title: "JavaScript",        course: "Web Development",        isActive: true    },    {        id: 2,        title: "React",        course: "Frontend Development",        isActive: false    },    {        id: 3,        titile: "Node",        course: "Backend Development",        isActive: true    }]Convert this into json format |
 """
-CATEGORY_QUESTION = """
-I gave you one prompt. Please determine the category of the above prompt.
+CODE_RELATED_AND_CATEGORY_QUESTION = """
+I gave you one prompt. Please determine if is this prompt code-related, and if so also determine the category of the above prompt.
 The output is json format
 {
+    "code-related": "..." // 0 / 1 : 0 - non-related, 1 - code-related
     "category": "..." // "Code Understanding" / "Code Execution" / "Code Translation" / ...
+}
+"""
+
+
+TRUTHFUL_AND_CORRECT_STATEMENT = """
+# Is The Response Truthful And Correct
+
+Identify the correctness of any claims in the explanation and whether the code (if any) is correct and useful. Please take up to 15 minutes to research information across both responses as needed.
+
+Use the following rubric:
+
+| Option        | Reason                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Explanation        |
+|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
+| No Issues     | All claims in both the explanation and any code comments are factual and accurate; the code (if any) is functional, safe, and useful.                                                                                                                                                                                                                                                                                                                                           | Not Required       |
+| Minor Issues  | Either or both of the following are true: <ul><li>Text: primary claims (central to addressing the prompt) are factual/accurate; secondary claims contain meaningful inaccuracies (or unfounded claims). <ul><li>Examples include: an otherwise correct explanation of a library that uses an incorrect link, or a description of a system that misconstrues a small detail of its design.</li></ul></li><li>Code: has minor problems that are straightforward to fix (e.g., missing imports, small syntax errors), or is correct but has misleading comments.</li></ul> | Required if issues are found. Describe all issues. |
+| Major Issues  | Either or both of the following are true: <ul><li>Text: primary claims contain meaningful inaccuracies (or unfounded claims), such that the response is not helpful to the user. <ul><li>For example, a response that seriously mischaracterizes the design or usage of a library, or a response that mischaracterizes what the code does.</li></ul></li><li>Code: has one or more of the following problems: <ul><li>Do not use this to flag responses that make simplifying assumptions that a user would reasonably be expected to notice and improve, such as using a hard-coded password in a clearly visible location. </li><li>Functionality: the program does not compile or run and would require substantial effort to repair.</li><li>Safety: the code would create safety or security risks if used, such as relying on libraries with known vulnerabilities or failing to sanitize user inputs.</li><li>Performance: the code is unnecessarily slow, for instance, due to using a quadratic algorithm where a (log-)linear option exists, or repeatedly concatenating long strings instead of using a stringbuilder.</li><li>Documentation: the comments contain meaningful inaccuracies that make the code very hard to understand.</li></ul></li></ul> <br> Important Note: <br> Keep in mind that the code may be functional for the prompter, even if it does not compile or run on your setup. For instance, a response that points to a file only accessible to the prompter, or provides a partial program based on the context provided by the prompter should not be marked as non-functional unless it contains errors that would (likely) manifest in the prompter’s programming context. | Required if issues are found. Describe all issues. |
+| Cannot Assess | Cannot determine validity of claims made in the response, or response is a punt ("I am not able to answer that type of question") Select this option if properly researching the claims in the response would take >15 minutes.                                                                                                                                                                                                                                                | Not Required       |
+| N/A           | No explicit or implicit claims are made in the response and it does not include code.                                                                                                                                                                                                                                                                                                                                                                                             | Not Required       |
+"""
+TRUTHFUL_AND_CORRECT_QUESTION = """
+I gave you one prompt and two responses (A and B) to the prompt.
+Please determine if the responses are truthful and correct.
+The output is json format
+{
+    "A": { // The result for The Response B.
+        "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
+        "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this.
+    },
+    "B": { // The result for The Response A.
+        "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
+        "reason": "..." // If the type is not No Issues, in that case please describe in 20 - 40 words.
+    }
 }
 """

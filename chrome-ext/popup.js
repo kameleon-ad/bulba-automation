@@ -45,7 +45,10 @@ function solve() {
             response_b,
         }),
         redirect: 'follow',
-    }).then(() => {});
+    }).then(res => res.json())
+    .then(result => {
+        console.log(result);
+    });
 }
 
 
