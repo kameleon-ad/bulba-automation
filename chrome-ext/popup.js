@@ -64,16 +64,17 @@ function solve() {
     const check_matched_category = (category_expand_ele, result) => {
         return new Promise((resolve) => {
             const interval_handler = setInterval(() => {
-                const target_ele = Array.from(document.querySelectorAll("label.MuiFormControlLabel-root")).find(ele => {
-                    return ele.innerText.includes(result.category.category);
-                })
-                if (target_ele) {
-                    target_ele.parentElement.querySelector("input").dispatchEvent(clickEvent);
-                    clearInterval(interval_handler);
-                    return resolve();
-                }
                 category_expand_ele.dispatchEvent(clickEvent);
-            }, 1000);
+                clearInterval(interval_handler);
+                    // const target_ele = Array.from(document.querySelectorAll("label.MuiFormControlLabel-root")).find(ele => {
+                    //     return ele.innerText.includes(result.category.category);
+                    // })
+                    // if (target_ele) {
+                    //     target_ele.parentElement.querySelector("input").dispatchEvent(clickEvent);
+                    //     clearInterval(interval_handler);
+                    //     return resolve();
+                    // }
+            }, 2000);
         });
     };
 
@@ -97,7 +98,7 @@ function solve() {
 
         const truthful_b_ele = Array
             .from(document.querySelectorAll("span"))
-            .find(element => element.innerText === "Is Response B truthful and correct? *")?.parentElement.parentElement;
+            .find(element => element.innerText === "Is Response B truthful and correct? *")?.parentElement.parentElement.parentElement.parentElement;
         
         truthful_b_ele.querySelectorAll("label.MuiFormControlLabel-root")[result.truthful_and_correct.B.type]
             .querySelector("input").dispatchEvent(clickEvent);
