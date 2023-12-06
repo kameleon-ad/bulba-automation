@@ -30,6 +30,7 @@ def _build_code_related_and_category_messages(prompt: str):
     messages.extend([
         {"role": "user", "content": CODE_RELATED_STATEMENT},
         {"role": "user", "content": CATEGORY_STATEMENT},
+        {"role": "user", "content": RATE_CLARITY_STATEMENT},
         {"role": "user", "content": prompt},
         {"role": "user", "content": CODE_RELATED_AND_CATEGORY_QUESTION}
     ])

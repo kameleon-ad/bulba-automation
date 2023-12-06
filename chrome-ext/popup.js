@@ -37,6 +37,16 @@ function solve() {
     const changeEvent = new Event("change", { bubbles: true });
     const category_selector = "span.MuiButtonBase-root.MuiIconButton-root.MuiCheckbox-root.MuiCheckbox-colorPrimary.MuiIconButton-colorPrimary";
 
+    const CODE_RELATED_QUESTION = "Is the prompt code-related? *";
+    const COMPLEXITY_QUESTION = "In your view, how complex is this prompt? *";
+
+    const A_TRUTHFUL_CORRECT_QUESTION = "Is Response A truthful and correct? *";
+    const B_TRUTHFUL_CORRECT_QUESTION = "Is Response B truthful and correct? *";
+
+    const find_block_by_question = (question) => {
+        return Array.from(document.querySelectorAll("span")).find(element => element.innerText === question)?.parentElement.parentElement.parentElement.parentElement;
+    }
+
     const interact_related = (result) => {
         return new Promise ((resolve) => {
             const code_related_ele = document.querySelector("p.MuiFormHelperText-root").parentElement.querySelectorAll("input")[1];
