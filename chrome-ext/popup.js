@@ -38,10 +38,22 @@ function solve() {
     const category_selector = "span.MuiButtonBase-root.MuiIconButton-root.MuiCheckbox-root.MuiCheckbox-colorPrimary.MuiIconButton-colorPrimary";
 
     const CODE_RELATED_QUESTION = "Is the prompt code-related? *";
+    const CODE_CATEGORY_QUESTION = "Please select the category for the Code-Related Prompt: *";
+    const EXPERTISE_LEVEL_QUESTION = "What is your expertise level with the subject(s) of this prompt? *";
     const COMPLEXITY_QUESTION = "In your view, how complex is this prompt? *";
 
+    const A_FOLLOW_INSTRUCTION_QUESTION = "Did the response A follow the instructions it was given in the prompt (both explicit and implicit)?"
+    const B_FOLLOW_INSTRUCTION_QUESTION = "Did the response B follow the instructions it was given in the prompt (both explicit and implicit)?"
     const A_TRUTHFUL_CORRECT_QUESTION = "Is Response A truthful and correct? *";
     const B_TRUTHFUL_CORRECT_QUESTION = "Is Response B truthful and correct? *";
+    const A_WELL_WRITTEN_QUESTION = "Is Response A well written? *";
+    const B_WELL_WRITTEN_QUESTION = "Is Response B well written? *";
+    const A_HOW_VERBOSE_QUESTION = "How verbose is Response A?";
+    const B_HOW_VERBOSE_QUESTION = "How verbose is Response B?";
+    const A_SAFE_QUESTION = "How safe and harmless is Response A? *";
+    const B_SAFE_QUESTION = "How safe and harmless is Response B? *";
+    const SXS_SCORE_QUESTION = "Side by Side (SxS) Score";
+    const SXS_SCORE_EXPLANATION_QUESTION = "SxS Score Explanation *";
 
     const find_block_by_question = (question) => {
         return Array.from(document.querySelectorAll("span")).find(element => element.innerText === question)?.parentElement.parentElement.parentElement.parentElement;
@@ -73,51 +85,40 @@ function solve() {
 
     const check_matched_category = (category_expand_ele, result) => {
         return new Promise((resolve) => {
-            const interval_handler = setInterval(() => {
+            const setupTimeoutForCategroySelection = () => {
                 category_expand_ele.dispatchEvent(clickEvent);
-                clearInterval(interval_handler);
-                    // const target_ele = Array.from(document.querySelectorAll("label.MuiFormControlLabel-root")).find(ele => {
-                    //     return ele.innerText.includes(result.category.category);
-                    // })
-                    // if (target_ele) {
-                    //     target_ele.parentElement.querySelector("input").dispatchEvent(clickEvent);
-                    //     clearInterval(interval_handler);
-                    //     return resolve();
-                    // }
-            }, 2000);
+                setTimeout(() => {
+                    const target_ele = Array.from(document.querySelectorAll("label.MuiFormControlLabel-root")).find(ele => {
+                        return ele.innerText.includes(result.category.category);
+                    });
+                    if (target_ele) {
+                        target_ele.parentElement.querySelector("input").dispatchEvent(clickEvent);
+                        return resolve();
+                    }
+                    setupTimeoutForCategroySelection();
+                }, 1000);
+            };
+            setupTimeoutForCategroySelection();
         });
+    };
+
+    const type_and_result_interact = (block=document.createElement("div"), {type, reason}) => {
+        block.querySelectorAll("label.MuiFormControlLabel-root")[type].querySelector("input").dispatchEvent(clickEvent);
+        if (type > 0 && type < 3) {
+            const reason_area = block.nextElementSibling.querySelector("textarea");
+            reason_area.value = reason;
+            reason_area.dispatchEvent(changeEvent);
+        }
     };
 
     const interact_category = (result) => {
         const category_expand_ele = document.querySelectorAll(category_selector)[1].querySelector("input");
         check_matched_category(category_expand_ele, result).then(() => {
+            const truthful_a_ele = find_block_by_question(A_TRUTHFUL_CORRECT_QUESTION);
+            const truthful_b_ele = find_block_by_question(B_TRUTHFUL_CORRECT_QUESTION);
+            type_and_result_interact(truthful_a_ele, result.truthful_and_correct.A);
+            type_and_result_interact(truthful_b_ele, result.truthful_and_correct.B);
         });
-
-        const truthful_a_ele = Array
-            .from(document.querySelectorAll("span"))
-            .find(element => element.innerText === "Is Response A truthful and correct? *")?.parentElement.parentElement.parentElement.parentElement;
-        
-        truthful_a_ele.querySelectorAll("label.MuiFormControlLabel-root")[result.truthful_and_correct.A.type]
-            .querySelector("input").dispatchEvent(clickEvent);
-
-        if (result.truthful_and_correct.A.type) {
-            const reason_a_input = truthful_a_ele.nextElementSibling.querySelector("textarea");
-            reason_a_input.value = result.truthful_and_correct.A.reason;
-            reason_a_input.dispatchEvent(changeEvent);
-        }
-
-        const truthful_b_ele = Array
-            .from(document.querySelectorAll("span"))
-            .find(element => element.innerText === "Is Response B truthful and correct? *")?.parentElement.parentElement.parentElement.parentElement;
-        
-        truthful_b_ele.querySelectorAll("label.MuiFormControlLabel-root")[result.truthful_and_correct.B.type]
-            .querySelector("input").dispatchEvent(clickEvent);
-
-        if (result.truthful_and_correct.B.type) {
-            const reason_b_input = truthful_b_ele.nextElementSibling.querySelector("textarea");
-            reason_b_input.value = result.truthful_and_correct.B.reason;
-            reason_b_input.dispatchEvent(changeEvent);
-        }
     }
 
     let [_, prompt, response_a, response_b] = Array
