@@ -29,6 +29,86 @@ document.getElementById('solve').addEventListener('click', () => {
 
 
 function solve() {
+    const clickEvent = new MouseEvent('click', {
+        'view': window,
+        'bubbles': true,
+        'cancelable': true
+    });
+    const changeEvent = new Event("change", { bubbles: true });
+    const category_selector = "span.MuiButtonBase-root.MuiIconButton-root.MuiCheckbox-root.MuiCheckbox-colorPrimary.MuiIconButton-colorPrimary";
+
+    const interact_related = (result) => {
+        return new Promise ((resolve) => {
+            const code_related_ele = document.querySelector("p.MuiFormHelperText-root").parentElement.querySelectorAll("input")[1];
+            if (result.category['code-related']) {
+                code_related_ele.dispatchEvent(clickEvent);
+            } else {
+                return;
+            }
+            return resolve();
+        })
+    };
+
+    const check_category_select_dep = () => {
+        return new Promise((resolve) => {
+            const interval_handler = setInterval(() => {
+                const elements = document.querySelectorAll(category_selector);
+                if (elements.length > 1) {
+                    clearInterval(interval_handler);
+                    return resolve();
+                }
+            }, 1000);
+        });
+    };
+
+    const check_matched_category = (category_expand_ele, result) => {
+        return new Promise((resolve) => {
+            const interval_handler = setInterval(() => {
+                const target_ele = Array.from(document.querySelectorAll("label.MuiFormControlLabel-root")).find(ele => {
+                    return ele.innerText.includes(result.category.category);
+                })
+                if (target_ele) {
+                    target_ele.parentElement.querySelector("input").dispatchEvent(clickEvent);
+                    clearInterval(interval_handler);
+                    return resolve();
+                }
+                category_expand_ele.dispatchEvent(clickEvent);
+            }, 1000);
+        });
+    };
+
+    const interact_category = (result) => {
+        const category_expand_ele = document.querySelectorAll(category_selector)[1].querySelector("input");
+        check_matched_category(category_expand_ele, result).then(() => {
+        });
+
+        const truthful_a_ele = Array
+            .from(document.querySelectorAll("span"))
+            .find(element => element.innerText === "Is Response A truthful and correct? *")?.parentElement.parentElement.parentElement.parentElement;
+        
+        truthful_a_ele.querySelectorAll("label.MuiFormControlLabel-root")[result.truthful_and_correct.A.type]
+            .querySelector("input").dispatchEvent(clickEvent);
+
+        if (result.truthful_and_correct.A.type) {
+            const reason_a_input = truthful_a_ele.nextElementSibling.querySelector("textarea");
+            reason_a_input.value = result.truthful_and_correct.A.reason;
+            reason_a_input.dispatchEvent(changeEvent);
+        }
+
+        const truthful_b_ele = Array
+            .from(document.querySelectorAll("span"))
+            .find(element => element.innerText === "Is Response B truthful and correct? *")?.parentElement.parentElement;
+        
+        truthful_b_ele.querySelectorAll("label.MuiFormControlLabel-root")[result.truthful_and_correct.B.type]
+            .querySelector("input").dispatchEvent(clickEvent);
+
+        if (result.truthful_and_correct.B.type) {
+            const reason_b_input = truthful_b_ele.nextElementSibling.querySelector("textarea");
+            reason_b_input.value = result.truthful_and_correct.B.reason;
+            reason_b_input.dispatchEvent(changeEvent);
+        }
+    }
+
     let [_, prompt, response_a, response_b] = Array
         .from(document.getElementsByClassName('MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded'))
         .map(element => element.innerHTML);
@@ -47,7 +127,13 @@ function solve() {
         redirect: 'follow',
     }).then(res => res.json())
     .then(result => {
-        console.log(result);
+        interact_related(result)
+            .then(() => {
+                check_category_select_dep()
+                    .then(() => {
+                        interact_category(result);
+                    });
+            });
     });
 }
 
