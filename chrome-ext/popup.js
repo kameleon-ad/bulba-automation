@@ -41,6 +41,7 @@ function solve() {
     const CODE_CATEGORY_QUESTION = "Please select the category for the Code-Related Prompt: *";
     const EXPERTISE_LEVEL_QUESTION = "What is your expertise level with the subject(s) of this prompt? *";
     const COMPLEXITY_QUESTION = "In your view, how complex is this prompt? *";
+    const CLARITY_QUESTION = "Rate the clarity of the prompt. *";
 
     const A_FOLLOW_INSTRUCTION_QUESTION = "Did the response A follow the instructions it was given in the prompt (both explicit and implicit)?"
     const B_FOLLOW_INSTRUCTION_QUESTION = "Did the response B follow the instructions it was given in the prompt (both explicit and implicit)?"
@@ -55,8 +56,8 @@ function solve() {
     const SXS_SCORE_QUESTION = "Side by Side (SxS) Score";
     const SXS_SCORE_EXPLANATION_QUESTION = "SxS Score Explanation *";
 
-    const find_block_by_question = (question) => {
-        return Array.from(document.querySelectorAll("span")).find(element => element.innerText === question)?.parentElement.parentElement.parentElement.parentElement;
+    const find_block_by_question = (question, tag="span") => {
+        return Array.from(document.querySelectorAll(tag)).find(element => element.innerText === question)?.parentElement.parentElement.parentElement.parentElement;
     }
 
     const interact_related = (result) => {
@@ -88,8 +89,9 @@ function solve() {
             const setupTimeoutForCategroySelection = () => {
                 category_expand_ele.dispatchEvent(clickEvent);
                 setTimeout(() => {
+                    const category = result.category.category.replace(" - ", " ");
                     const target_ele = Array.from(document.querySelectorAll("label.MuiFormControlLabel-root")).find(ele => {
-                        return ele.innerText.includes(result.category.category);
+                        return ele.innerText.includes(category);
                     });
                     if (target_ele) {
                         target_ele.parentElement.querySelector("input").dispatchEvent(clickEvent);
@@ -102,6 +104,11 @@ function solve() {
         });
     };
 
+    const writing_value = (ele=document.createElement("input"), value) => {
+        ele.value = value;
+        ele.dispatchEvent(changeEvent);
+    }
+
     const type_and_result_interact = (block=document.createElement("div"), {type, reason}) => {
         block.querySelectorAll("label.MuiFormControlLabel-root")[type].querySelector("input").dispatchEvent(clickEvent);
         if (type > 0 && type < 3) {
@@ -111,13 +118,26 @@ function solve() {
         }
     };
 
+    const sxs_interact = (sxs_result) => {
+        const sxs_score_block = find_block_by_question(SXS_SCORE_QUESTION);
+        const sxs_score_rail = sxs_score_block.querySelector("span.MuiSlider-rail");
+        const sxs_block = find_block_by_question(SXS_SCORE_EXPLANATION_QUESTION, "div");
+        writing_value(sxs_block.querySelector("textarea"), sxs_result.sxs.why);
+    };
+
     const interact_category = (result) => {
         const category_expand_ele = document.querySelectorAll(category_selector)[1].querySelector("input");
         check_matched_category(category_expand_ele, result).then(() => {
+            const clarity_block = find_block_by_question(CLARITY_QUESTION);
+            clarity_block.querySelectorAll('input')[result.category.clarity].dispatchEvent(clickEvent);
+
             const truthful_a_ele = find_block_by_question(A_TRUTHFUL_CORRECT_QUESTION);
             const truthful_b_ele = find_block_by_question(B_TRUTHFUL_CORRECT_QUESTION);
+
             type_and_result_interact(truthful_a_ele, result.truthful_and_correct.A);
             type_and_result_interact(truthful_b_ele, result.truthful_and_correct.B);
+
+            sxs_interact(result.sxs);
         });
     }
 

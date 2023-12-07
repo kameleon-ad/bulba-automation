@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from app.utils import parse_html_to_md
-from app.utils.v2.oai import code_related_and_category, truthful_and_correct
+from app.utils.v2.oai import code_related_and_category, truthful_and_correct, sxs
 
 bulba_v2_api_blueprint = Blueprint('bulba_v2_api', __name__)
 
@@ -15,4 +15,5 @@ def bulba_v2_determine():
     return jsonify({
         "category": code_related_and_category(prompt),
         "truthful_and_correct": truthful_and_correct(prompt, response_a, response_b),
+        "sxs": sxs(prompt, response_a, response_b),
     })
