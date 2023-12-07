@@ -63,7 +63,7 @@ Complexity:
 | Moderately Complex/Involved | The prompt requires knowledge of relevant technical domains, programming libraries, algorithms etc. to be properly answered | Between 30 minutes to 1 hour  |
 | Very Complex/ Time Consuming | The prompt requires knowledge of complex libraries, multiple files, configs, APIs, project setup, algorithms or other complex data structures to solve. | Greater than 1 hour     |
 """
-CODE_RELATED_AND_CATEGORY_QUESTION = """
+CODE_RELATED_AND_CATEGORY_AND_COMPLEXITY_QUESTION = """
 I gave you one prompt. Please determine if is this prompt code-related.
 And if so also determine the category of the above prompt and the clarity and complexity of the prompt.
 The output is json format

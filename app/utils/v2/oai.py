@@ -44,7 +44,7 @@ def _build_code_related_and_category_and_complex_messages(prompt: str):
         {"role": "user", "content": COMPLEXITY_QUESTION},
         {"role": "user", "content": "Here is the prompt"},
         {"role": "user", "content": prompt},
-        {"role": "user", "content": CODE_RELATED_AND_CATEGORY_QUESTION}
+        {"role": "user", "content": CODE_RELATED_AND_CATEGORY_AND_COMPLEXITY_QUESTION}
     ])
     return messages
 
