@@ -134,13 +134,19 @@ function solve() {
         const category_expand_ele = document.querySelectorAll(category_selector)[1].querySelector("input");
         check_matched_category(category_expand_ele, result).then(() => {
             const clarity_block = find_block_by_question(CLARITY_QUESTION);
+            const expertise_level = find_block_by_question(EXPERTISE_LEVEL_QUESTION);
             clarity_block.querySelectorAll('input')[result.category.clarity].dispatchEvent(clickEvent);
+            expertise_level.querySelectorAll('input')[1].dispatchEvent(clickEvent);
 
-            const truthful_a_ele = find_block_by_question(A_TRUTHFUL_CORRECT_QUESTION);
-            const truthful_b_ele = find_block_by_question(B_TRUTHFUL_CORRECT_QUESTION);
+            const truthful_a_block = find_block_by_question(A_TRUTHFUL_CORRECT_QUESTION);
+            const truthful_b_block = find_block_by_question(B_TRUTHFUL_CORRECT_QUESTION);
+            const safe_a_block = find_block_by_question(A_SAFE_QUESTION);
+            const safe_b_block = find_block_by_question(B_SAFE_QUESTION);
 
-            type_and_result_interact(truthful_a_ele, result.truthful_and_correct.A);
-            type_and_result_interact(truthful_b_ele, result.truthful_and_correct.B);
+            type_and_result_interact(truthful_a_block, result.truthful_and_correct.A);
+            type_and_result_interact(truthful_b_block, result.truthful_and_correct.B);
+            type_and_result_interact(safe_a_block, result.safe_and_harmless.A);
+            type_and_result_interact(safe_b_block, result.safe_and_harmless.B);
 
             sxs_interact(result.sxs);
         });
