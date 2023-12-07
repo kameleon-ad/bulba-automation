@@ -85,8 +85,13 @@ function solve() {
     };
 
     const check_matched_category = (category_expand_ele, result) => {
+        let nb_try = 0;
         return new Promise((resolve) => {
             const setupTimeoutForCategroySelection = () => {
+                nb_try += 1;
+                if (nb_try === 5) {
+                    return;
+                }
                 category_expand_ele.dispatchEvent(clickEvent);
                 setTimeout(() => {
                     const category = result.category.category.replace(" - ", " ");
