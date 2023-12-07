@@ -49,14 +49,29 @@ Use the following rubric:
 | Vague/Ambiguous | Use this if it is unclear what the prompt is asking or if the prompt can be interpreted in more ways than one.                               |
 | Completely Clear | The prompt contains sufficient information for an experienced programmer to provide a helpful response.                                      |
 """
+COMPLEXITY_QUESTION = """
+# In Your View How Complex Is This Prompt
+
+Complexity:
+- Complexity is related to the difficulty level of the question.
+- Think "How long would it take someone to address the prompt without the help of the Model Response?".
+- This option should not be chosen in relation to the length of the prompt.
+
+| Complexity            | Description                                                         | How long would it take? |
+|-----------------------|---------------------------------------------------------------------|-------------------------|
+| Trivial               | The prompt requires non-technical or low-level coding knowledge     | Less than 30 minutes    |
+| Moderately Complex/Involved | The prompt requires knowledge of relevant technical domains, programming libraries, algorithms etc. to be properly answered | Between 30 minutes to 1 hour  |
+| Very Complex/ Time Consuming | The prompt requires knowledge of complex libraries, multiple files, configs, APIs, project setup, algorithms or other complex data structures to solve. | Greater than 1 hour     |
+"""
 CODE_RELATED_AND_CATEGORY_QUESTION = """
 I gave you one prompt. Please determine if is this prompt code-related.
-And if so also determine the category of the above prompt and the clarity of the prompt.
+And if so also determine the category of the above prompt and the clarity and complexity of the prompt.
 The output is json format
 {
     "code-related": "..." // 0 / 1 : 0 - non-related, 1 - code-related
     "category": "..." // "Code Understanding" / "Code Execution" / "Code Translation" / ...
     "clarity": ... // 0 - 2: 0 - Completely Clear, 1 - Vague/Ambiguous, 2 - Missing Context
+    "complexity": ... // 0 - 2: 0 - Trivial, 1 - Moderately Complex/Involved, 2 - Very Complex/ Time Consuming
 }
 """
 

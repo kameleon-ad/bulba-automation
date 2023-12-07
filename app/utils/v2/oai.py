@@ -5,8 +5,8 @@ from app.utils.v2.constants import *
 from app.extension import OPENAI_CLIENT
 
 
-def code_related_and_category(prompt: str):
-    messages = _build_code_related_and_category_messages(prompt)
+def code_related_and_category_and_complex(prompt: str):
+    messages = _build_code_related_and_category_and_complex_messages(prompt)
     return _chat_complete_json(messages)
 
 
@@ -35,12 +35,13 @@ def _chat_complete_json(messages: list):
     return result
 
 
-def _build_code_related_and_category_messages(prompt: str):
+def _build_code_related_and_category_and_complex_messages(prompt: str):
     messages = deepcopy(BASIC_MESSAGES)
     messages.extend([
         {"role": "user", "content": CODE_RELATED_STATEMENT},
         {"role": "user", "content": CATEGORY_STATEMENT},
         {"role": "user", "content": RATE_CLARITY_STATEMENT},
+        {"role": "user", "content": COMPLEXITY_QUESTION},
         {"role": "user", "content": "Here is the prompt"},
         {"role": "user", "content": prompt},
         {"role": "user", "content": CODE_RELATED_AND_CATEGORY_QUESTION}
