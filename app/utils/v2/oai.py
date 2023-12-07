@@ -15,6 +15,11 @@ def truthful_and_correct(prompt, response_a, response_b):
     return _chat_complete_json(messages)
 
 
+def safe_and_harmless(prompt, response_a, response_b):
+    messages = _build_safe_and_harmless_messages(prompt, response_a, response_b)
+    return _chat_complete_json(messages)
+
+
 def sxs(prompt, response_a, response_b):
     messages = _build_sxs_messages(prompt, response_a, response_b)
     return _chat_complete_json(messages)
@@ -36,6 +41,7 @@ def _build_code_related_and_category_messages(prompt: str):
         {"role": "user", "content": CODE_RELATED_STATEMENT},
         {"role": "user", "content": CATEGORY_STATEMENT},
         {"role": "user", "content": RATE_CLARITY_STATEMENT},
+        {"role": "user", "content": "Here is the prompt"},
         {"role": "user", "content": prompt},
         {"role": "user", "content": CODE_RELATED_AND_CATEGORY_QUESTION}
     ])
@@ -43,31 +49,45 @@ def _build_code_related_and_category_messages(prompt: str):
 
 
 def _build_truthful_and_correct_messages(prompt: str, response_a: str, response_b: str):
-    messages = deepcopy(BASIC_MESSAGES)
-    messages.extend([
-        {"role": "user", "content": TRUTHFUL_AND_CORRECT_STATEMENT},
-        {"role": "user", "content": "Here is the prompt"},
-        {"role": "user", "content": prompt},
-        {"role": "user", "content": "Here is the Response A"},
-        {"role": "user", "content": response_a},
-        {"role": "user", "content": "Here is the Response B"},
-        {"role": "user", "content": response_b},
-        {"role": "user", "content": TRUTHFUL_AND_CORRECT_QUESTION}
-    ])
-    return messages
+    return __build_messages_with_template_sprrq(
+        prompt,
+        response_a,
+        response_b,
+        TRUTHFUL_AND_CORRECT_STATEMENT,
+        TRUTHFUL_AND_CORRECT_QUESTION,
+    )
+
+
+def _build_safe_and_harmless_messages(prompt: str, response_a: str, response_b: str):
+    return __build_messages_with_template_sprrq(
+        prompt,
+        response_a,
+        response_b,
+        HARMLESS_STATEMENT,
+        HARMLESS_QUESTION,
+    )
 
 
 def _build_sxs_messages(prompt: str, response_a: str, response_b: str):
+    return __build_messages_with_template_sprrq(
+        prompt,
+        response_a,
+        response_b,
+        SXS_STATEMENT,
+        SXS_QUESTION,
+    )
+
+
+def __build_messages_with_template_sprrq(prompt, response_a, response_b, statement, question):
     messages = deepcopy(BASIC_MESSAGES)
     messages.extend([
-        {"role": "user", "content": SXS_STATEMENT},
+        {"role": "user", "content": statement},
         {"role": "user", "content": "Here is the prompt"},
         {"role": "user", "content": prompt},
         {"role": "user", "content": "Here is the response a"},
         {"role": "user", "content": response_a},
         {"role": "user", "content": "Here is the response b"},
         {"role": "user", "content": response_b},
-        {"role": "user", "content": "Please generate the answer. And regarding the estimationg of the time. The maximum is 30"},
-        {"role": "user", "content": SXS_QUESTION},
+        {"role": "user", "content": question},
     ])
     return messages
