@@ -162,7 +162,7 @@ function solve() {
     let [_, prompt, response_a, response_b] = Array
         .from(document.getElementsByClassName('MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded'))
         .map(element => element.innerHTML);
-    let api_link = 'http://localhost:5000/api/bulba_v2';
+    let api_link = 'http://181.41.143.154:5000/api/bulba_v2';
 
     fetch(api_link, {
         method: 'POST',
@@ -192,14 +192,14 @@ function upload() {
     let [instruction, prompt, response_a, response_b] = Array
         .from(document.querySelectorAll('[class*="MuiPaper-root-"], [class*="MuiPaper-elevation1-"], [class*="MuiPaper-rounded-"]'))
         .map(element => element.innerHTML);
-    let upload_url = 'http://localhost:5000/api/htmls/feedbacks';
+    let upload_url = 'http://181.41.143.154:5000/api/htmls/feedbacks';
     let task_id;
     
     if (!instruction) {
         [instruction, prompt, response_a, response_b] = Array
             .from(document.getElementsByClassName('MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded'))
             .map(element => element.innerHTML);
-        upload_url = 'http://localhost:5000/api/htmls/problems';
+        upload_url = 'http://181.41.143.154:5000/api/htmls/problems';
         const task_id_element = document.querySelector('div > strong + em');
         task_id = task_id_element.textContent.trim();
     } else {
