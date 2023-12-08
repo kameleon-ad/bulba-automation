@@ -15,8 +15,8 @@ def truthful_and_correct(prompt, response_a, response_b):
     return _chat_complete_json(messages)
 
 
-def safe_and_harmless(prompt, response_a, response_b):
-    messages = _build_safe_and_harmless_messages(prompt, response_a, response_b)
+def verbose_and_safe_and_harmless(prompt, response_a, response_b):
+    messages = _build_verbose_and_safe_and_harmless_messages(prompt, response_a, response_b)
     return _chat_complete_json(messages)
 
 
@@ -59,14 +59,20 @@ def _build_truthful_and_correct_messages(prompt: str, response_a: str, response_
     )
 
 
-def _build_safe_and_harmless_messages(prompt: str, response_a: str, response_b: str):
-    return __build_messages_with_template_sprrq(
-        prompt,
-        response_a,
-        response_b,
-        HARMLESS_STATEMENT,
-        HARMLESS_QUESTION,
-    )
+def _build_verbose_and_safe_and_harmless_messages(prompt: str, response_a: str, response_b: str):
+    messages = deepcopy(BASIC_MESSAGES)
+    messages.extend([
+        {"role": "user", "content": HOW_VERBOSE_STATEMENT},
+        {"role": "user", "content": HARMLESS_STATEMENT},
+        {"role": "user", "content": "Here is the prompt"},
+        {"role": "user", "content": prompt},
+        {"role": "user", "content": "Here is the response a"},
+        {"role": "user", "content": response_a},
+        {"role": "user", "content": "Here is the response b"},
+        {"role": "user", "content": response_b},
+        {"role": "user", "content": VERBOSE_HARMLESS_QUESTION},
+    ])
+    return messages
 
 
 def _build_sxs_messages(prompt: str, response_a: str, response_b: str):
