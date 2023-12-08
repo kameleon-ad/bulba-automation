@@ -20,6 +20,6 @@ def bulba_v2_determine():
     return jsonify({
         "category": code_related_and_category_and_complex(prompt),
         "truthful_and_correct": truthful_and_correct(prompt, response_a, response_b),
-        "safe_and_harmless": verbose_and_safe_and_harmless(prompt, response_a, response_b),
         "sxs": sxs(prompt, response_a, response_b),
+        **verbose_and_safe_and_harmless(prompt, response_a, response_b),
     })
