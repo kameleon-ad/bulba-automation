@@ -42,6 +42,7 @@ function solve() {
     const EXPERTISE_LEVEL_QUESTION = "What is your expertise level with the subject(s) of this prompt? *";
     const COMPLEXITY_QUESTION = "In your view, how complex is this prompt? *";
     const CLARITY_QUESTION = "Rate the clarity of the prompt. *";
+    const ESTIMATION_TIME_QUESTION = "Estimate how long, in minutes, it would take you to answer this prompt from scratch (i.e., without the help of an AI model response). *";
 
     const A_FOLLOW_INSTRUCTION_QUESTION = "Did the response A follow the instructions it was given in the prompt (both explicit and implicit)?"
     const B_FOLLOW_INSTRUCTION_QUESTION = "Did the response B follow the instructions it was given in the prompt (both explicit and implicit)?"
@@ -135,8 +136,14 @@ function solve() {
         check_matched_category(category_expand_ele, result).then(() => {
             const clarity_block = find_block_by_question(CLARITY_QUESTION);
             const expertise_level = find_block_by_question(EXPERTISE_LEVEL_QUESTION);
+            const complexity_block = find_block_by_question(COMPLEXITY_QUESTION);
+            const estimation_time_block = find_block_by_question(ESTIMATION_TIME_QUESTION, "div");
             clarity_block.querySelectorAll('input')[result.category.clarity].dispatchEvent(clickEvent);
             expertise_level.querySelectorAll('input')[1].dispatchEvent(clickEvent);
+            complexity_block.querySelectorAll('input')[result.category.complexity].dispatchEvent(clickEvent);
+            console.log(estimation_time_block);
+            console.log(estimation_time_block.querySelector("input"))
+            writing_value(estimation_time_block.querySelector("input"), ["15", "45", "75"][result.category.complexity]);
 
             const truthful_a_block = find_block_by_question(A_TRUTHFUL_CORRECT_QUESTION);
             const truthful_b_block = find_block_by_question(B_TRUTHFUL_CORRECT_QUESTION);
