@@ -26,7 +26,7 @@ What is the code use case this prompt falls under? (Only if the prompt is code r
 | Code Execution | Execute code and display the results. (Note that this wouldn’t account for implicit code execution for instance converting data from one format to other | Run this code: a = 1 b = "3" print(a+b) |
 | Code Translation  | Translate code into another programming language. | I have this snippet in Java: \`\`\`\` please convert it to Kotlin.   |
 | Code Modication - Fix | Specify defective code and ask the model to fix it. This includes fixing formatting and style.  | Fix this code #!/bin/bash # Enable the Firewall sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on # Check if the Firewall is enabled firewall_status=$(sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate) if [[ "$firewall_status" == "Firewall is enabled. (State = 1)" ]]; then echo "Firewall is enabled" else echo "Failed to enable Firewall" fi |
-| Code Modication - Optimization | Specify code and ask the model to improve its performance. | Please help me optimize the following bigquery SQL query: WITH import_data AS ( SELECT id, ref_date, day FROM test-zsuite.catalunya.revenue__import_pms_data WHERE ref_date IN ('2023-08-28', '2023-09-04', '2023-09-11') AND day = '2023-09-11' AND band_room = 'BASE-A' ) SELECT *  FROM import_data ORDER BY ref_date, day, band_room; |
+| Code Modication - Optimization | Specify code and ask the model to improve its performance. | Please help me optimize the following bigquery SQL query: WITH import_data AS ( SELECT id, ref_date, day FROM test-zsuite.catalunya.revenue__import_pms_data WHERE ref_date IN ('2523-08-28', '2523-09-04', '2523-09-11') AND day = '2523-09-11' AND band_room = 'BASE-A' ) SELECT *  FROM import_data ORDER BY ref_date, day, band_room; |
 | Code Modication - Other  | Specify code and ask the model to change it.   | SELECT DISTINCT    RTRIM(ISNULL(Userfield1, '')) AS FieldtypeFROM    tblclient    LEFT JOIN fngetsplit(@ClientCust, '') AS UseCust ON tblclient.ClientCust = UseCust.ValueWHERE    RTRIM(ISNULL(Userfield1, '')) <> ''    AND tblclient.Clientclosed = 'N'UNIONSELECT DISTINCT    RTRIM(ISNULL(Userfield2, '')) AS FieldtypeFROM    tblclient    LEFT JOIN fngetsplit(@ClientCust, '') AS UseCust ON tblclient.ClientCust = UseCust.ValueWHERE    RTRIM(ISNULL(Userfield2, '')) <> ''    AND tblclient.Clientclosed = 'N'UNIONSELECT DISTINCT    RTRIM(ISNULL(Userfield3, '')) AS FieldtypeFROM    tblclient    LEFT JOIN fngetsplit(@ClientCust, '') AS UseCust ON tblclient.ClientCust = UseCust.ValueWHERE    RTRIM(ISNULL(Userfield3, '')) <> ''    AND tblclient.Clientclosed = 'N';simplify this |
 | Code Debug - Error | Provide an error and (optional) code ask the model to what it means or how to resolve it.   | PS C:\\Users\\WeiJie\\PycharmProjects> python -m venv ll_envError: Command '['C:\\\\Users\\\\WeiJie\\\\PycharmProjects\\\\ll_env\\\\Scripts\\\\python.exe', '-m', 'ensurepip', '--upgrade', '--default-pip']' returned non-zero exit status 1.  |
 | Code Generation - Tests  | Generate tests, for given code.   | Generate four unit tests for a C# functionCountDatesMatchingToday(List<DateTime> dates) that counts how many dates on the input list fall on the same day of the week as today. Test with an empty list, list with some matches, list with no matches, and a list with all elements matching. Make sure the tests are robust and work independently of when they are run. |
@@ -102,7 +102,37 @@ The output is json format
     },
     "B": { // The result for The Response B.
         "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-        "reason": "..." // If the type is not No Issues, in that case please describe in 20 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+        "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+    }
+}
+"""
+
+
+WELL_WRITTEN_STATEMENT = """
+# Is The Response Well Written
+
+Identify whether the answer uses high-quality prose that’s well-organized and easy to read, and whether the included code, if any, is reasonably formatted and includes accurate documentation.
+
+Use the following rubric:
+
+| Option     | Reason                                                                                                                                                               | Explanation            |
+|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
+| No Issues  | The response was well-written, coherently organized, and not repetitive. The code, if any, is well-formatted, readable, and reasonably documented.                     | Not required           |
+| Minor Issues | Either or both of the following are true: <ul><li>Text: the response had minor issues in writing quality, organization, or repetition, but nothing that really stood out.</li><li>Code: the code (if any) has minor formatting issues or uses overly generic documentation but is otherwise readable.</li></ul> | Required if issues are found. Briefly Describe all issues. |
+| Major Issues | Either or both of the following are true: <ul><li>Text: the response was barely intelligible, confusing, or organized poorly enough that it was difficult to read and understand.</li><li>Code: the code (if any) is hard to follow, very poorly formatted, or lacked documentation where it was critically needed.</li></ul> | Required if issues are found. Briefly Describe all issues. |
+"""
+WELL_WRITTEN_QUESTION = """
+I gave you one prompt and two responses (A and B) to the prompt.
+Please determine how the responses are well written.
+The output is json format
+{
+    "A": { // The result for The Response A.
+        "type": int // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
+        "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+    },
+    "B": { // The result for The Response B.
+        "type": int, // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
+        "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
     }
 }
 """
@@ -152,7 +182,7 @@ The output is json format
         },
         "B": { // The result for The Response B.
             "type": int, // int // (0 - 3): 0 - "Too verbose", 1 - "Just Right", 2 - "Too short"
-            "reason": "..." // If the type is not Just Right, in that case please describe in 20 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+            "reason": "..." // If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
         }
     }
     "safe_and_harmless": {
@@ -162,7 +192,7 @@ The output is json format
         },
         "B": { // The result for The Response B.
             "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-            "reason": "..." // If the type is not No Issues, in that case please describe in 20 - 40 words. Please don't use any type of passive in the sentences.
+            "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
         }
     }
 }
