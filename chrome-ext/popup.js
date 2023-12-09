@@ -56,6 +56,7 @@ function solve() {
     const B_SAFE_QUESTION = "How safe and harmless is Response B? *";
     const SXS_SCORE_QUESTION = "Side by Side (SxS) Score";
     const SXS_SCORE_EXPLANATION_QUESTION = "SxS Score Explanation *";
+    const SXS_CONFIDENCE_QUESTION = "SxS Confidence: Rate your confidence level in your assessment *";
 
     const find_block_by_question = (question, tag="span") => {
         let rlt = Array.from(document.querySelectorAll(tag)).find(element => element.innerText === question);
@@ -90,7 +91,7 @@ function solve() {
         });
     };
 
-    const check_matched_category = (category_expand_ele, result) => {
+    const check_matched_category = (result) => {
         const code_category_block = find_block_by_question(CODE_CATEGORY_QUESTION);
         const category = result.category.category.replace(" - ", " ");
         let nb_try = 0;
@@ -101,7 +102,7 @@ function solve() {
                     return;
                 }
                 const input_elements = code_category_block.querySelectorAll("input");
-                if (input_elements.length > 5) {
+                if (input_elements.length === 2) {
                     input_elements[1].dispatchEvent(clickEvent);
                 }
                 setTimeout(() => {
@@ -143,8 +144,7 @@ function solve() {
     };
 
     const interact_category = (result) => {
-        const category_expand_ele = document.querySelectorAll(category_selector)[1].querySelector("input");
-        check_matched_category(category_expand_ele, result).then(() => {
+        check_matched_category(result).then(() => {
             const clarity_block = find_block_by_question(CLARITY_QUESTION);
             const expertise_level = find_block_by_question(EXPERTISE_LEVEL_QUESTION);
             const complexity_block = find_block_by_question(COMPLEXITY_QUESTION);
@@ -160,11 +160,13 @@ function solve() {
             const truthful_b_block = find_block_by_question(B_TRUTHFUL_CORRECT_QUESTION);
             const safe_a_block = find_block_by_question(A_SAFE_QUESTION);
             const safe_b_block = find_block_by_question(B_SAFE_QUESTION);
+            const confidence_block = find_block_by_question(SXS_CONFIDENCE_QUESTION);
 
             type_and_result_interact(truthful_a_block, result.truthful_and_correct.A);
             type_and_result_interact(truthful_b_block, result.truthful_and_correct.B);
             type_and_result_interact(safe_a_block, result.safe_and_harmless.A);
             type_and_result_interact(safe_b_block, result.safe_and_harmless.B);
+            confidence_block.querySelectorAll("input")[3].dispatchEvent(clickEvent);
 
             sxs_interact(result.sxs);
         });
