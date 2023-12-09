@@ -20,6 +20,11 @@ def verbose_and_safe_and_harmless(prompt, response_a, response_b):
     return _chat_complete_json(messages)
 
 
+def overall_quality(prompt, response_a, response_b):
+    messages = _build_overall_quality(prompt, response_a, response_b)
+    return _chat_complete_json(messages)
+
+
 def sxs(prompt, response_a, response_b):
     messages = _build_sxs_messages(prompt, response_a, response_b)
     return _chat_complete_json(messages)
@@ -71,6 +76,21 @@ def _build_verbose_and_safe_and_harmless_messages(prompt: str, response_a: str, 
         {"role": "user", "content": "Here is the response b"},
         {"role": "user", "content": response_b},
         {"role": "user", "content": VERBOSE_HARMLESS_QUESTION},
+    ])
+    return messages
+
+
+def _build_overall_quality(prompt: str, response_a: str, response_b: str):
+    messages = deepcopy(BASIC_MESSAGES)
+    messages.append([
+        {"role": "user", "content": OVERALL_RATING_STATEMENT},
+        {"role": "user", "content": "Here is the prompt"},
+        {"role": "user", "content": prompt},
+        {"role": "user", "content": "Here is the response a"},
+        {"role": "user", "content": response_a},
+        {"role": "user", "content": "Here is the response b"},
+        {"role": "user", "content": response_b},
+        {"role": "user", "content": OVERALL_RATING_QUESTION},
     ])
     return messages
 

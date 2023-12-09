@@ -5,6 +5,7 @@ from app.utils.v2.oai import (
     code_related_and_category_and_complex,
     truthful_and_correct,
     verbose_and_safe_and_harmless,
+    overall_quality,
     sxs,
 )
 
@@ -22,4 +23,5 @@ def bulba_v2_determine():
         "truthful_and_correct": truthful_and_correct(prompt, response_a, response_b),
         "sxs": sxs(prompt, response_a, response_b),
         **verbose_and_safe_and_harmless(prompt, response_a, response_b),
+        **overall_quality(prompt, response_a, response_b),
     })

@@ -98,11 +98,11 @@ The output is json format
 {
     "A": { // The result for The Response A.
         "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-        "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this.
+        "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
     },
     "B": { // The result for The Response B.
         "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-        "reason": "..." // If the type is not No Issues, in that case please describe in 20 - 40 words.
+        "reason": "..." // If the type is not No Issues, in that case please describe in 20 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
     }
 }
 """
@@ -147,22 +147,54 @@ The output is json format
 {
     "verbose": {
         "A": { // The result for The Response A.
-            "type": int // (0 - 4): 0 - "Too verbose", 1 - "Just Right", 2 - "Too short"
-            "reason": ... // If the type is (1) Just Right, in that case, there is no need to use "reason" field. Also "B" is same with this.
+            "type": int // (0 - 3): 0 - "Too verbose", 1 - "Just Right", 2 - "Too short"
+            "reason": ... // If the type is (1) Just Right, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
         },
         "B": { // The result for The Response B.
-            "type": int, // int // (0 - 4): 0 - "Too verbose", 1 - "Just Right", 2 - "Too short"
-            "reason": "..." // If the type is not Just Right, in that case please describe in 20 - 40 words.
+            "type": int, // int // (0 - 3): 0 - "Too verbose", 1 - "Just Right", 2 - "Too short"
+            "reason": "..." // If the type is not Just Right, in that case please describe in 20 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
         }
     }
     "safe_and_harmless": {
         "A": { // The result for The Response A.
             "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-            "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this.
+            "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
         },
         "B": { // The result for The Response B.
             "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-            "reason": "..." // If the type is not No Issues, in that case please describe in 20 - 40 words.
+            "reason": "..." // If the type is not No Issues, in that case please describe in 20 - 40 words. Please don't use any type of passive in the sentences.
+        }
+    }
+}
+"""
+
+
+OVERALL_RATING_STATEMENT = """
+# Rate The Response's Overall Quality
+
+Use the following rubric:
+
+| Option      | Description                                                                                                          |
+|-------------|----------------------------------------------------------------------------------------------------------------------|
+| Amazing     | This response really delivered on the prompt! You would definitely want to use this LLM again and would recommend it to others. |
+| Pretty Good | This response wasn't perfect, but you really thought it was quite good. You'd use this LLM again.                     |
+| Okay        | This response was fine. It didn't leave much of an impact either way.                                                |
+| Pretty Bad  | This response had some major problems. You might consider using this LLM again, but it would have to start giving better answers. |
+| Horrible    | This response really missed the mark. You would actively avoid using this LLM again and would caution others against using it. |
+"""
+OVERALL_RATING_QUESTION = """
+I gave you one prompt and two responses (A and B) to the prompt.
+Please determine Rate The Response's Overall Quality.
+The output is json format
+{
+    "overall_quality": {
+        "A": { // The result for The Response A.
+            "type": int // (0 - 4): 0 - "Amazing", 1 - "Pretty Good", 2 - "Okay", 3 - "Pretty Bad", 4 - "Horrible"
+            "reason": ... // If the type is (1) Just Right, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+        },
+        "B": { // The result for The Response B.
+            "type": int // (0 - 4): 0 - "Amazing", 1 - "Pretty Good", 2 - "Okay", 3 - "Pretty Bad", 4 - "Horrible"
+            "reason": "..." // If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
         }
     }
 }
@@ -243,7 +275,7 @@ Write the answer in this format (json) to the question I gave you at first. keep
     },
     "sxs": {
         "rate_which_is_better": 2,    \\ (1 - 7: 1 - A is much better, 7 - B is much better, 4 - A and B are the same) If the best is "response a", this field is smaller than 5 and if "response b", biggr than 3.
-        "why": ".." \\ Write the reason in 25 ~ 40 words
+        "why": ".." \\ Write the reason in 400 characters
     }
 }
 """
