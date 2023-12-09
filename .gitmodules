@@ -1,0 +1,3 @@
+[submodule "chrome-ext"]
+	path = chrome-ext
+	url = git@github.com:kameleon-ad/bulba-automation-chrome-ext.git
