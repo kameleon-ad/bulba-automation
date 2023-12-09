@@ -18,5 +18,8 @@
     "permissions": [
         "activeTab",
         "scripting"
+    ],
+    "host_permissions": [
+        "http://181.41.143.154:5000/*"
     ]
 }
