@@ -220,11 +220,11 @@ The output is json format
     "overall_quality": {
         "A": { // The result for The Response A.
             "type": int // (0 - 4): 0 - "Amazing", 1 - "Pretty Good", 2 - "Okay", 3 - "Pretty Bad", 4 - "Horrible"
-            "reason": ... // If the type is (1) Just Right, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            "reason": ... // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
         },
         "B": { // The result for The Response B.
             "type": int // (0 - 4): 0 - "Amazing", 1 - "Pretty Good", 2 - "Okay", 3 - "Pretty Bad", 4 - "Horrible"
-            "reason": "..." // If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            "reason": "..." // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
         }
     }
 }
