@@ -69,10 +69,12 @@ I gave you one prompt. Please determine if is this prompt code-related.
 And if so also determine the category of the above prompt and the clarity and complexity of the prompt.
 The output is json format
 {
-    "code-related": "..." // 0 / 1 : 0 - non-related, 1 - code-related
-    "category": "..." // "Code Understanding" / "Code Execution" / "Code Translation" / ...
-    "clarity": ... // 0 - 2: 0 - Completely Clear, 1 - Vague/Ambiguous, 2 - Missing Context
-    "complexity": ... // 0 - 2: 0 - Trivial, 1 - Moderately Complex/Involved, 2 - Very Complex/ Time Consuming
+    "category": {
+        "code-related": "..." // 0 / 1 : 0 - non-related, 1 - code-related
+        "category": "..." // "Code Understanding" / "Code Execution" / "Code Translation" / ...
+        "clarity": ... // 0 - 2: 0 - Completely Clear, 1 - Vague/Ambiguous, 2 - Missing Context
+        "complexity": ... // 0 - 2: 0 - Trivial, 1 - Moderately Complex/Involved, 2 - Very Complex/ Time Consuming
+    }
 }
 """
 
@@ -97,13 +99,15 @@ I gave you one prompt and two responses (A and B) to the prompt.
 Please determine if the responses are truthful and correct.
 The output is json format
 {
-    "A": { // The result for The Response A.
-        "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-        "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
-    },
-    "B": { // The result for The Response B.
-        "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-        "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+    truthful_and_correct: {
+        "A": { // The result for The Response A.
+            "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
+            "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+        },
+        "B": { // The result for The Response B.
+            "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
+            "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+        }
     }
 }
 """
@@ -127,13 +131,15 @@ I gave you one prompt and two responses (A and B) to the prompt.
 Please determine how the responses are well written.
 The output is json format
 {
-    "A": { // The result for The Response A.
-        "type": int // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
-        "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
-    },
-    "B": { // The result for The Response B.
-        "type": int, // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
-        "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+    "well_written": {
+        "A": { // The result for The Response A.
+            "type": int // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
+            "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+        },
+        "B": { // The result for The Response B.
+            "type": int, // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
+            "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+        }
     }
 }
 """
@@ -293,20 +299,22 @@ I'll give you one prompt and two responses to that.
 SXS_QUESTION = """
 Write the answer in this format (json) to the question I gave you at first. keep the validation format of json. especailly: sxs.why
 {
-    best: "response ...",  \\ "response a" / "response b"
-    "response a": {
-        "correct": "...", \\ "Incorrect" / "Partially correct" / "Completely correct"
-        "helpful": "...", \\ "Not helpful whatsoever" / "Minimally helpful" / "Moderately helpful" / "Very helpful"
-        "time": 5 \\ This field is related the response a. How is the response correct and helpful. If the response a is perfect, there is no need to change the response and this field is 0.
-    },
-    "response b": {
-        "correct": "...", \\ "Incorrect" / "Partially correct" / "Completely correct"
-        "helpful": "...", \\ "Not helpful whatsoever" / "Minimally helpful" / "Moderately helpful" / "Very helpful"
-        "time": 0 \\ This field is related the response b. How is the response correct and helpful. If the response b is perfect, there is no need to change the response and this field is 0.
-    },
     "sxs": {
-        "rate_which_is_better": 2,    \\ (1 - 7: 1 - A is much better, 7 - B is much better, 4 - A and B are the same) If the best is "response a", this field is smaller than 5 and if "response b", biggr than 3.
-        "why": ".." \\ Write the reason in 30 ~ 35 words
+        best: "response ...",  \\ "response a" / "response b"
+        "response a": {
+            "correct": "...", \\ "Incorrect" / "Partially correct" / "Completely correct"
+            "helpful": "...", \\ "Not helpful whatsoever" / "Minimally helpful" / "Moderately helpful" / "Very helpful"
+            "time": 5 \\ This field is related the response a. How is the response correct and helpful. If the response a is perfect, there is no need to change the response and this field is 0.
+        },
+        "response b": {
+            "correct": "...", \\ "Incorrect" / "Partially correct" / "Completely correct"
+            "helpful": "...", \\ "Not helpful whatsoever" / "Minimally helpful" / "Moderately helpful" / "Very helpful"
+            "time": 0 \\ This field is related the response b. How is the response correct and helpful. If the response b is perfect, there is no need to change the response and this field is 0.
+        },
+        "sxs": {
+            "rate_which_is_better": 2,    \\ (1 - 7: 1 - A is much better, 7 - B is much better, 4 - A and B are the same) If the best is "response a", this field is smaller than 5 and if "response b", biggr than 3.
+            "why": ".." \\ Write the reason in 30 ~ 35 words
+        }
     }
 }
 """
