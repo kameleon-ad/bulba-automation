@@ -86,7 +86,7 @@ def _build_overall_quality(prompt: str, response_a: str, response_b: str):
         response_a,
         response_b,
         OVERALL_RATING_STATEMENT,
-        OVERALL_RATING_QUESTION
+        OVERALL_RATING_QUESTION,
     )
 
 

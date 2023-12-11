@@ -1,5 +1,6 @@
 BASIC_MESSAGES = [
-    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "system", "content": "You are a helpful assistant which don't use passive phrases in your whole voice"},
+    {"role": "system", "content": "You also rarely use the these vocabularies: tokenizer, dataset"},
 ]
 
 
@@ -305,7 +306,7 @@ Write the answer in this format (json) to the question I gave you at first. keep
     },
     "sxs": {
         "rate_which_is_better": 2,    \\ (1 - 7: 1 - A is much better, 7 - B is much better, 4 - A and B are the same) If the best is "response a", this field is smaller than 5 and if "response b", biggr than 3.
-        "why": ".." \\ Write the reason in 400 characters
+        "why": ".." \\ Write the reason in 30 ~ 35 words
     }
 }
 """
