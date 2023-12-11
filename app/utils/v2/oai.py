@@ -15,6 +15,10 @@ def truthful_and_correct(prompt, response_a, response_b):
     return _chat_complete_json(messages)
 
 
+def ftw(prompt: str, response_a: str, response_b: str):
+    return _chat_complete_json(_build_ftw_messages(prompt, response_a, response_b))
+
+
 def verbose_and_safe_and_harmless(prompt, response_a, response_b):
     messages = _build_verbose_and_safe_and_harmless_messages(prompt, response_a, response_b)
     return _chat_complete_json(messages)
@@ -38,6 +42,20 @@ def _chat_complete_json(messages: list):
     )
     result = json.loads(res.choices[0].message.content)
     return result
+
+
+def _build_ftw_messages(prompt: str, response_a: str, response_b: str):
+    return __build_messages_with_template_ssqrrp(
+        prompt,
+        response_a,
+        response_b,
+        (
+            FOLLOW_INSTRUCTION_STATEMENT,
+            TRUTHFUL_AND_CORRECT_STATEMENT,
+            WELL_WRITTEN_STATEMENT,
+        ),
+        FTW_QUESTION,
+    )
 
 
 def _build_code_related_and_category_and_complex_messages(prompt: str):
@@ -100,10 +118,31 @@ def _build_sxs_messages(prompt: str, response_a: str, response_b: str):
     )
 
 
-def __build_messages_with_template_sprrq(prompt, response_a, response_b, statement, question):
+def __build_messages_with_template_sprrq(prompt: str, response_a: str, response_b: str, statement: str, question: str):
     messages = deepcopy(BASIC_MESSAGES)
     messages.extend([
         {"role": "user", "content": statement},
+        {"role": "user", "content": "Here is the prompt"},
+        {"role": "user", "content": prompt},
+        {"role": "user", "content": "Here is the response a"},
+        {"role": "user", "content": response_a},
+        {"role": "user", "content": "Here is the response b"},
+        {"role": "user", "content": response_b},
+        {"role": "user", "content": question},
+    ])
+    return messages
+
+
+def __build_messages_with_template_ssqrrp(
+    prompt: str,
+    response_a: str,
+    response_b: str,
+    statements: iter[str],
+    question: str,
+):
+    messages = deepcopy(BASIC_MESSAGES)
+    messages.extend(({"role": "user", "content": statement} for statement in statements))
+    messages.extend([
         {"role": "user", "content": "Here is the prompt"},
         {"role": "user", "content": prompt},
         {"role": "user", "content": "Here is the response a"},

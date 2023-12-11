@@ -79,6 +79,39 @@ The output is json format
 """
 
 
+FOLLOW_INSTRUCTION_STATEMENT = """
+# Did The Response Follow The Instructions It Was Given By The Prompt Both Implicitly And Explicitly
+
+Focus on whether the response reflects the instructions and goals of the prompt, not on truthfulness or correctness issues (e.g., bad code, poor explanation) – those rated below.
+
+Use the following rubric:
+
+| Option     | Description                                                                                     | Explanation        |
+|------------|-------------------------------------------------------------------------------------------------|--------------------|
+| No Issues  | All prompt instructions were followed; response delivered fully on the tasks of the prompt.       | Nor required       |
+| Minor Issues | The response addressed most of the instructions or goal(s) of the prompt, but missed or misinterpreted some small parts. <ul><li>For example: a response that describes the right API but assumes a slightly different use-case than what the user articulates.</li></ul> | Required if issues are found. Describe what aspects of the prompt the response missed or misinterpreted. |
+| Major Issues | The response missed key components of the prompt, rendering it unhelpful to the user. <ul><li>For example: a response that discusses a different programming language or library than what the user asked about, or misses a key requirement of the code to be generated.</li></ul> | Required if issues are found. Describe what aspects of the prompt the response missed or misinterpreted. |
+| N/A        | There are no explicit or implicit instructions to follow in the prompt or the response is canned (e.g. the model states it cannot do it). | Not required       |
+"""
+FOLLOW_INSTRUCTION_QUESTION = """
+I gave you one prompt and two responses (A and B) to the prompt.
+Please determine do the responses follow the instructions if is given by the prompt both implicitly and explicitly.
+The output is json format
+{
+    follow_instruction: {
+        "A": { // The result for The Response A.
+            "type": int // (0 - 3): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "N/A"
+            "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+        },
+        "B": { // The result for The Response B.
+            "type": int, // (0 - 3): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "N/A"
+            "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+        }
+    }
+}
+"""
+
+
 TRUTHFUL_AND_CORRECT_STATEMENT = """
 # Is The Response Truthful And Correct
 
@@ -144,6 +177,52 @@ The output is json format
 }
 """
 
+FTW_QUESTION = """
+I gave you one prompt and two responses (A and B) to the prompt.
+Please answer the following questions per responses base on the prompt and the guidelines per response I gave you at first.
+
+- Did The Response Follow The Instructions It Was Given By The Prompt Both Implicitly And Explicitly
+    - Focus on whether the response reflects the instructions and goals of the prompt, not on truthfulness or correctness issues (e.g., bad code, poor explanation)
+- Is The Response Truthful And Correct
+    - Identify the correctness of any claims in the explanation and whether the code (if any) is correct and useful.
+- Is The Response Well Written
+    - Identify whether the answer uses high-quality prose that’s well-organized and easy to read, and whether the included code, if any, is reasonably formatted and includes sufficient and accurate documentation.
+The output is json format.
+{
+    ftw: {
+        follow_instruction: {
+            "A": { // The result for The Response A.
+                "type": int // (0 - 3): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "N/A"
+                "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            },
+            "B": { // The result for The Response B.
+                "type": int, // (0 - 3): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "N/A"
+                "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+            }
+        }
+        truthful_and_correct: {
+            "A": { // The result for The Response A.
+                "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
+                "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            },
+            "B": { // The result for The Response B.
+                "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
+                "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+            }
+        }
+        well_written: {
+            "A": { // The result for The Response A.
+                "type": int // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
+                "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            },
+            "B": { // The result for The Response B.
+                "type": int, // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
+                "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+            }
+        }
+    }
+}
+"""
 
 HOW_VERBOSE_STATEMENT = """
 # How Verbose Is The Response
