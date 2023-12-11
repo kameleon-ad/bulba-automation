@@ -184,11 +184,11 @@ The output is json format
 {
     "verbose": {
         "A": { // The result for The Response A.
-            "type": int // (0 - 3): 0 - "Too verbose", 1 - "Just Right", 2 - "Too short"
+            "type": int // (1 - 3): 1- "Too verbose", 2 - "Just Right", 3 - "Too short"
             "reason": ... // If the type is (1) Just Right, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
         },
         "B": { // The result for The Response B.
-            "type": int, // int // (0 - 3): 0 - "Too verbose", 1 - "Just Right", 2 - "Too short"
+            "type": int, // int // (1 - 3): 1 - "Too verbose", 2 - "Just Right", 3 - "Too short"
             "reason": "..." // If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
         }
     }
@@ -318,4 +318,3 @@ Write the answer in this format (json) to the question I gave you at first. keep
     }
 }
 """
-
