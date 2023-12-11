@@ -1,5 +1,6 @@
 import json
 from copy import deepcopy
+from typing import Iterable
 
 from app.utils.v2.constants import *
 from app.extension import OPENAI_CLIENT
@@ -137,7 +138,7 @@ def __build_messages_with_template_ssqrrp(
     prompt: str,
     response_a: str,
     response_b: str,
-    statements: iter[str],
+    statements: Iterable[str],
     question: str,
 ):
     messages = deepcopy(BASIC_MESSAGES)
