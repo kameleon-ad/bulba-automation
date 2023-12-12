@@ -179,6 +179,121 @@ The output is json format
 }
 """
 
+SXS_SCORE_STATEMENT = """
+# SxS Score
+
+Rate your preference between the two responses on a scale from 1 to 7, where 1 means A is much better, 7 means B is much better, and 4 is neutral.
+
+SxS Score
+- A [1] --- [2] --- [3] --- [4] Neutral --- [5] --- [6] --- [7] B
+
+- Consider your ratings above in section 2.
+- Prioritize responses that are correct, meaning the provided code (if any) is functional, addresses the prompt, and the associated explanation is accurate.
+- If multiple responses are similarly (in)correct, consider which response is most likely to be helpful, meaning the explanation and code (if any) is relevant to the prompt and provides at least some useful insight.
+
+Explanation:
+- Always required.
+- Briefly explain the most important considerations in your indicated preference. Relate your motivation to the answers provided above.
+- Refer back to the answers you gave in Section 2 to create a thorough explanation for your preference above.
+"""
+SXS_SCORE_QUESTION = """
+I gave you one prompt and two responses (A and B) to the prompt.
+Please determine the sxs_score for two response A and B.
+The output is json format.
+{
+    "sxs": {
+        "sxs": {
+            "rate_which_is_better": 2,    \\ (1 - 7: 1 - A is much better, 7 - B is much better, 4 - A and B are the same) If the best is "response a", this field is smaller than 5 and if "response b", biggr than 3.
+            "why": ".." \\ Write the reason in 30 ~ 35 words
+        }
+    }
+}
+"""
+
+EXAMPLES = """
+- Prompt:
+    What all is wrong with this code?
+    
+    #include <iostream>
+    #include <string>
+    #include <vector>
+    
+    class Task {
+    public:
+      std::string name;
+    
+      Task(std::string n) {
+        name = n;
+        completed = false;
+      }
+    };
+    
+    class TaskManager {
+    private:
+      std::vector<Task> tasks;
+    
+    public:
+      void addTask(std::string taskName) {
+        Task newTask(taskName);
+        tasks.push_back(newTask);
+      }
+    
+      void completeTask(int index) {
+        tasks[index].completed = true;
+      }
+    
+      void printTasks() {
+        for (int i = 0; i <= tasks.size(); i++) {
+          std::cout << tasks[i].name << ": " << (tasks[i].completed ? "Completed" : "Not Completed") << std::endl;
+        }
+      }
+    };
+    
+    int main() {
+      TaskManager manager;
+    
+      manager.addTask("Task 1");
+      manager.addTask("Task 2");
+      manager.completeTask(3);
+    
+      manager.printTasks();
+    
+      return 0;
+    }
+- Response:
+    I see one problem with your code:
+    
+    **Index out of bounds:**
+    
+    * In the `printTasks` function, the loop iterates from `i = 0` to `i <= tasks.size()`. This means it will try to access the element at index `tasks.size()` which is beyond the valid range of the vector. This will cause a runtime error.
+    
+    **Solution:**
+    
+    Change the loop condition to `i < tasks.size()`:
+    
+    ```cpp
+    for (int i = 0; i < tasks.size(); i++) {
+      // …
+    }    
+    ```
+    By addressing this issue, you can ensure your code runs correctly and provides accurate information about the tasks managed by the system.
+- Does the response follow the prompt instructions?
+    type: No Issues
+    reason: The response accurately attempts to find issues with the code given.
+- Is the response truthful and correct?
+    type: Major Issues
+    reason: The response wrongly states that there is only one issue with the code. There are several including: an uninitialized `completed` attribute for the Task class, and incorrect indexing in the `completeTask` function.
+- Is the response well written?
+    type: No Issues
+    reason: The response does not have any flaws as described in the instructions.
+- How verbose is the response?
+    type: Too Short
+    reason: The response is too short because it did not explain the other errors with the code.
+- How safe and harmless is the response?
+    type: No Issues
+    reason: The response does not have any issues here as described in the instructions.
+"""
+
 FTW_QUESTION = """
 I gave you one prompt and two responses (A and B) to the prompt.
 Please answer the following questions per responses base on the prompt and the guidelines per response I gave you at first.
@@ -189,6 +304,14 @@ Please answer the following questions per responses base on the prompt and the g
     - Identify the correctness of any claims in the explanation and whether the code (if any) is correct and useful.
 - Is The Response Well Written
     - Identify whether the answer uses high-quality prose that’s well-organized and easy to read, and whether the included code, if any, is reasonably formatted and includes sufficient and accurate documentation.
+- Rate The Responses' Overall Quality
+    - Determine Rate The Response's Overall Quality base on the 3 above questions:
+        - Did The Response Follow The Instructions It Was Given By The Prompt Both Implicitly And Explicitly ( No Issues, Minor Issues, Major Issues)
+        - Is The Response Truthful And Correct ( No Issues, Minor Issues, Major Issues)
+        - Is The Response Well Written ( No Issues, Minor Issues, Major Issues)
+- SXS Score.
+    - Determine the SXS score.
+        - Rate your preference between the two responses on a scale from 1 to 7, where 1 means A is much better, 7 means B is much better, and 4 is neutral.
 The output is json format.
 The important things are
     - you don't have to use passive phrases.
@@ -223,6 +346,22 @@ The important things are
             "B": { // The result for The Response B.
                 "type": int, // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
                 "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+            }
+        }
+        "sxs": {
+            "sxs": {
+                "rate_which_is_better": ...,    \\ (1 - 7: 1 - A is much better, 7 - B is much better, 4 - A and B are the same) If the best is "response a", this field is smaller than 5 and if "response b", biggr than 3.
+                "why": ".." \\ Write the reason in 30 ~ 35 words
+            }
+        }
+        "overall_quality": {
+            "A": { // The result for The Response A.
+                "type": int // (0 - 4): 0 - "Amazing", 1 - "Pretty Good", 2 - "Okay", 3 - "Pretty Bad", 4 - "Horrible"
+                "reason": ... // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+            },
+            "B": { // The result for The Response B.
+                "type": int // (0 - 4): 0 - "Amazing", 1 - "Pretty Good", 2 - "Okay", 3 - "Pretty Bad", 4 - "Horrible"
+                "reason": "..." // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
             }
         }
     }

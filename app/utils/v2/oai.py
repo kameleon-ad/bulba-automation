@@ -54,6 +54,8 @@ def _build_ftw_messages(prompt: str, response_a: str, response_b: str):
             FOLLOW_INSTRUCTION_STATEMENT,
             TRUTHFUL_AND_CORRECT_STATEMENT,
             WELL_WRITTEN_STATEMENT,
+            OVERALL_RATING_STATEMENT,
+            SXS_SCORE_STATEMENT,
         ),
         FTW_QUESTION,
     )
