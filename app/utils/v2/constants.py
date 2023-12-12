@@ -190,6 +190,9 @@ Please answer the following questions per responses base on the prompt and the g
 - Is The Response Well Written
     - Identify whether the answer uses high-quality prose that’s well-organized and easy to read, and whether the included code, if any, is reasonably formatted and includes sufficient and accurate documentation.
 The output is json format.
+The important things are
+    - you don't have to use passive phrases.
+    - When it comes the reason, the reason must be written in at least 18 words.
 {
     ftw: {
         follow_instruction: {
