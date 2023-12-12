@@ -316,9 +316,10 @@ The output is json format.
 The important things are
     - you don't have to use passive phrases.
     - When it comes the reason, the reason must be written in at least 18 words.
+    - Please be careful about the cases of N/A, Cannot Access in follow_instruction, truthful_and_correct
 {
     ftw: {
-        follow_instruction: {
+        follow_instruction: { // Focus on whether the response reflects the instructions and goals of the prompt, not on truthfulness or correctness issues (e.g., bad code, poor explanation)
             "A": { // The result for The Response A.
                 "type": int // (0 - 3): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "N/A"
                 "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
@@ -328,7 +329,7 @@ The important things are
                 "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
             }
         }
-        truthful_and_correct: {
+        truthful_and_correct: { // Identify the correctness of any claims in the explanation and whether the code (if any) is correct and useful.
             "A": { // The result for The Response A.
                 "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
                 "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
@@ -338,7 +339,7 @@ The important things are
                 "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
             }
         }
-        well_written: {
+        well_written: { //Identify whether the answer uses high-quality prose that’s well-organized and easy to read, and whether the included code, if any, is reasonably formatted and includes sufficient and accurate documentation.
             "A": { // The result for The Response A.
                 "type": int // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
                 "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
