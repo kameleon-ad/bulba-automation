@@ -350,10 +350,8 @@ The important things are
             }
         }
         "sxs": {
-            "sxs": {
-                "rate_which_is_better": ...,    \\ (1 - 7: 1 - A is much better, 7 - B is much better, 4 - A and B are the same) If the best is "response a", this field is smaller than 5 and if "response b", biggr than 3.
-                "why": ".." \\ Write the reason in 30 ~ 35 words
-            }
+            "rate_which_is_better": ...,    \\ (1 - 7: 1 - A is much better, 7 - B is much better, 4 - A and B are the same) If the best is "response a", this field is smaller than 5 and if "response b", biggr than 3.
+            "why": ".." \\ Write the reason in 30 ~ 35 words
         }
         "overall_quality": {
             "A": { // The result for The Response A.
