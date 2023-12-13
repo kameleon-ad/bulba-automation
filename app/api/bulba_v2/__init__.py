@@ -26,10 +26,10 @@ def bulba_v2_determine():
     with ThreadPoolExecutor() as executor:
         future_to_function = {
             executor.submit(code_related_and_category_and_complex, prompt): "category",
-            # executor.submit(truthful_and_correct, prompt, response_a, response_b): "truthful_and_correct",
-            # executor.submit(sxs, prompt, response_a, response_b): "sxs",
+            executor.submit(truthful_and_correct, prompt, response_a, response_b): "truthful_and_correct",
+            executor.submit(sxs, prompt, response_a, response_b): "sxs",
             executor.submit(verbose_and_safe_and_harmless, prompt, response_a, response_b): "verbose_and_safe_and_harmless",
-            # executor.submit(overall_quality, prompt, response_a, response_b): "overall_quality",
+            executor.submit(overall_quality, prompt, response_a, response_b): "overall_quality",
             executor.submit(ftw, prompt, response_a, response_b): "ftw",
         }
 
