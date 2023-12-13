@@ -7,35 +7,13 @@
     <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
 </head>
 <body>
-<label for="id-question">Question</label><input type="text" id="id-question">
-<label for="position">Position</label><input type="text" id="position">
-<button id="submit">Submit</button>
-<div id="question"></div>
-<div id="prompt"></div>
-<h1>Response</h1>
-<div id="response"></div>
-<h1>GPT</h1>
-<div id="gpt"></div>
-<script>
-    const question_id_ele = document.getElementById("id-question");
-    const position_ele = document.getElementById("position")
-    const question_ele = document.getElementById("question");
-    const prompt_ele = document.getElementById("prompt")
-    const response_ele = document.getElementById("response");
-    const gpt_ele = document.getElementById("gpt")
-    const converter = new showdown.Converter();
-
-    document.getElementById("submit").addEventListener("click", () => {
-        fetch(`http://localhost:5000/api/bulba/${question_id_ele.value}/${position_ele.value}`, {method: 'GET'})
-            .then(res => res.json())
-            .then(({question, prompt, response, gpt}) => {
-                question_ele.innerHTML = converter.makeHtml(question);
-                prompt_ele.innerHTML = converter.makeHtml(prompt);
-                response_ele.innerHTML = converter.makeHtml(response);
-                gpt_ele.innerText = gpt;
-            })
-    })
-</script>
+<h1>Our Goal is only one. To build the completely automatic Bulba Tasker</h1>
+<p>Please contact with <a href="mailto:eujinpotter@gmail.com">eujinpotter@gmail.com</a></p>
+<div>
+    <h1>Pricing</h1>
+    <div>For Golden Premium ($ per task), we will provide the completely automatic Chrome extension and v3-API. (Looking for wait-list)</div>
+    <div>For Silver Premium ($ per task), we will provide the semi-automatic Chrome extension and v2-API. (Ready)</div>
+</div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.9.2/dist/umd/popper.min.js" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>

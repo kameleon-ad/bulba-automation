@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 
 from app.api import api_blueprint
@@ -15,5 +15,9 @@ def create_app():
     DB_MIGRATE.init_app(app, SQL_DB)
 
     app.register_blueprint(api_blueprint, url_prefix='/api')
+
+    @app.get("/")
+    def index():
+        return send_from_directory('static', 'index.html')
 
     return app
