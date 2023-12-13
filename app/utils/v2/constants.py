@@ -38,6 +38,18 @@ What is the code use case this prompt falls under? (Only if the prompt is code r
 | Code Learning  | Provide guidance on how to learn programming language concepts, explanations for terms, questions about APIs.   | In Flask project I set up a route '/'. How can I let visitor download all website required files and then render index.html from their local ?\`   |
 | Code Recommendations  | Provide recommendations on which libraries or programming patterns to use   | What is the best library in python for hierarchical DBSCAN?   |
 | Data Conversion   | Convert from one data format to another. | [    {        id: 1,        title: "JavaScript",        course: "Web Development",        isActive: true    },    {        id: 2,        title: "React",        course: "Frontend Development",        isActive: false    },    {        id: 3,        titile: "Node",        course: "Backend Development",        isActive: true    }]Convert this into json format |
+Here are some examples.
+- Code Recommendation: What's a good HTTP client for node.js?
+- Code Generation: Show me how to do a HTTP request using Axios.
+- Code Recommendation: What's the best way to do a HTTP Request in Next.js?
+- Code Recommendation: Do you prefer [Code pattern 1] or [Code Pattern 2]?
+- Code Generation: (How to) fetch data using SWR?
+- Code Learning: Does React have a custom DOM? A broad question about a programming language, library or framework etc.
+- Code Debug Error: What does this [Error] mean?
+- Code Understanding: What's wrong with this [Code]?
+- Code Modification Fix: Debug this [Code].
+- Code Modification Other: Make this [code] recursive and not iterative.
+- This looks very like Code Understanding: Do you prefer [Code pattern 1] or [Code Pattern 2]. Ask a question about provided code, or code without ask (no question asked). However, in this case it's Code Recommendation as the AI Model is recommending a pattern
 """
 RATE_CLARITY_STATEMENT = """
 # Rate The Clarity Of The Prompt
@@ -304,6 +316,47 @@ Please answer the following questions per responses base on the prompt and the g
     - Identify the correctness of any claims in the explanation and whether the code (if any) is correct and useful.
 - Is The Response Well Written
     - Identify whether the answer uses high-quality prose that’s well-organized and easy to read, and whether the included code, if any, is reasonably formatted and includes sufficient and accurate documentation.
+
+- Here are some examples for the above three questions.
+    - Example Prompt:
+        Generate a python script that prints out the fibonacci number based on the index number entered using recursion.
+
+    - Example Response:
+    Here is a Python script that finds the Fibonacci number for a given index:
+    
+        ```python
+        def fibonacci(n):
+          \"\"\"
+          This function finds the nth Fibonacci number.
+          Args:
+            n: The index of the Fibonacci number to find.
+          Returns:
+            The nth Fibonacci number.
+          \"\"\"
+          a, b = 0, 1
+          i = 0
+          while i < n:
+            a, b = b, a + b
+            i += 1
+          return a
+        
+        # Example usage
+        print(fibonacci(5))  # Output: 5
+        ```
+        
+        You can modify the script to accept user input for the desired Fibonacci number index or integrate them into a larger program.
+        
+        I hope this helps! Let me know if you have any other questions
+    - Does the response follow the prompt instructions?
+        - Major Issues
+        - The response does not generate fibonacci numbers using recursion. It uses iteration, which is going against what the prompt asked for.
+    - Is the response truthful and correct?
+        - No Issues
+        - The response does not make any claims that are false. The code in the response executes fine and has no performance or documentation issues.
+    - Is this well written?
+        - Minor Issues
+        - There is a subjective sentences. I hope this helps
+
 - Rate The Responses' Overall Quality
     - Determine Rate The Response's Overall Quality base on the 3 above questions:
         - Did The Response Follow The Instructions It Was Given By The Prompt Both Implicitly And Explicitly ( No Issues, Minor Issues, Major Issues)
@@ -314,7 +367,8 @@ Please answer the following questions per responses base on the prompt and the g
         - Rate your preference between the two responses on a scale from 1 to 7, where 1 means A is much better, 7 means B is much better, and 4 is neutral.
 The output is json format.
 The important things are
-    - you don't have to use passive phrases.
+    - you must not use the passive phrases
+    - Please follow the examples regarding: Even if the response doesn't follow the prompt, but the response can be truthful and correct.
     - When it comes the reason, the reason must be written in at least 18 words.
     - Please be careful about the cases of N/A, Cannot Access in follow_instruction, truthful_and_correct
 {
