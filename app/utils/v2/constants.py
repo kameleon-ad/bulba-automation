@@ -369,7 +369,7 @@ The output is json format.
 The important things are
     - you must not use the passive phrases
     - Please follow the examples regarding: Even if the response doesn't follow the prompt, but the response can be truthful and correct.
-    - When it comes the reason, the reason must be written in at least 18 words.
+    - When it comes the reason, you must write the reason in at least 18 words.
     - Please be careful about the cases of N/A, Cannot Access in follow_instruction, truthful_and_correct
 {
     ftw: {
