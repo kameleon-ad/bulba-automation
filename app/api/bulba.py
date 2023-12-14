@@ -2,7 +2,8 @@ from flask import Blueprint, jsonify
 
 from ..models import Answer
 from ..utils import parse_bulba_request
-from ..utils.openai import DEFAULT_PROMPTS, OPENAI_CLIENT
+from ..utils.openai import OPENAI_CLIENT
+from oai import DEFAULT_PROMPTS
 
 bulba_api_blueprint = Blueprint('bulba-api', __name__)
 

@@ -1,11 +1,3 @@
-BASIC_MESSAGES = [
-    {"role": "system", "content": "You are a helpful assistant which don't use passive phrases in your whole voice"},
-    {"role": "system", "content": "You also rarely use the these vocabularies: tokenizer, dataset"},
-    {"role": "system", "content": "You also provide some reasons which has at least 17 words"},
-    {"role": "system", "content": "We are not interested in your knowledge cutting off. Please don't mention about that"},
-]
-
-
 CODE_RELATED_STATEMENT = """
 # Is the Prompt Code-Related?
 

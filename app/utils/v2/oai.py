@@ -1,9 +1,9 @@
-import json
 from copy import deepcopy
 from typing import Iterable
 
+from app.utils.openai import _chat_complete_json
+from app.utils.constants import *
 from app.utils.v2.constants import *
-from app.extension import OPENAI_CLIENT
 
 
 def code_related_and_category_and_complex(prompt: str):
@@ -33,16 +33,6 @@ def overall_quality(prompt, response_a, response_b):
 def sxs(prompt, response_a, response_b):
     messages = _build_sxs_messages(prompt, response_a, response_b)
     return _chat_complete_json(messages)
-
-
-def _chat_complete_json(messages: list):
-    res = OPENAI_CLIENT.chat.completions.create(
-        model="gpt-4-1106-preview",
-        messages=messages,
-        response_format={"type": "json_object"},
-    )
-    result = json.loads(res.choices[0].message.content)
-    return result
 
 
 def _build_ftw_messages(prompt: str, response_a: str, response_b: str):
