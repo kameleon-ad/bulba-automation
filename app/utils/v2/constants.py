@@ -107,11 +107,11 @@ The output is json format
     follow_instruction: {
         "A": { // The result for The Response A.
             "type": int // (0 - 3): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "N/A"
-            "reason": ... // Please don't use any type of passive in the sentences. please describe in 25 - 40 words.
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         },
         "B": { // The result for The Response B.
             "type": int, // (0 - 3): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "N/A"
-            "reason": "..." // Please don't use any type of passive in the sentences. please describe in 25 - 40 words.
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         }
     }
 }
@@ -141,11 +141,11 @@ The output is json format
     truthful_and_correct: {
         "A": { // The result for The Response A.
             "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-            "reason": ... //  Please don't use any type of passive in the sentences. Please describe in 25 - 40 words.
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         },
         "B": { // The result for The Response B.
             "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-            "reason": "..." // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         }
     }
 }
@@ -173,11 +173,11 @@ The output is json format
     "well_written": {
         "A": { // The result for The Response A.
             "type": int // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
-            "reason": ... // Please don't use any type of passive in the sentences. Please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         },
         "B": { // The result for The Response B.
             "type": int, // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
-            "reason": "..." // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         }
     }
 }
@@ -217,68 +217,68 @@ The output is json format.
 EXAMPLES = """
 - Prompt:
     What all is wrong with this code?
-    
+
     #include <iostream>
     #include <string>
     #include <vector>
-    
+
     class Task {
     public:
       std::string name;
-    
+
       Task(std::string n) {
         name = n;
         completed = false;
       }
     };
-    
+
     class TaskManager {
     private:
       std::vector<Task> tasks;
-    
+
     public:
       void addTask(std::string taskName) {
         Task newTask(taskName);
         tasks.push_back(newTask);
       }
-    
+
       void completeTask(int index) {
         tasks[index].completed = true;
       }
-    
+
       void printTasks() {
         for (int i = 0; i <= tasks.size(); i++) {
           std::cout << tasks[i].name << ": " << (tasks[i].completed ? "Completed" : "Not Completed") << std::endl;
         }
       }
     };
-    
+
     int main() {
       TaskManager manager;
-    
+
       manager.addTask("Task 1");
       manager.addTask("Task 2");
       manager.completeTask(3);
-    
+
       manager.printTasks();
-    
+
       return 0;
     }
 - Response:
     I see one problem with your code:
-    
+
     **Index out of bounds:**
-    
+
     * In the `printTasks` function, the loop iterates from `i = 0` to `i <= tasks.size()`. This means it will try to access the element at index `tasks.size()` which is beyond the valid range of the vector. This will cause a runtime error.
-    
+
     **Solution:**
-    
+
     Change the loop condition to `i < tasks.size()`:
-    
+
     ```cpp
     for (int i = 0; i < tasks.size(); i++) {
       // …
-    }    
+    }
     ```
     By addressing this issue, you can ensure your code runs correctly and provides accurate information about the tasks managed by the system.
 - Does the response follow the prompt instructions?
@@ -315,7 +315,7 @@ Please answer the following questions per responses base on the prompt and the g
 
     - Example Response:
     Here is a Python script that finds the Fibonacci number for a given index:
-    
+
         ```python
         def fibonacci(n):
           \"\"\"
@@ -331,13 +331,13 @@ Please answer the following questions per responses base on the prompt and the g
             a, b = b, a + b
             i += 1
           return a
-        
+
         # Example usage
         print(fibonacci(5))  # Output: 5
         ```
-        
+
         You can modify the script to accept user input for the desired Fibonacci number index or integrate them into a larger program.
-        
+
         I hope this helps! Let me know if you have any other questions
     - Does the response follow the prompt instructions?
         - Major Issues
@@ -368,31 +368,31 @@ The important things are
         follow_instruction: { // Focus on whether the response reflects the instructions and goals of the prompt, not on truthfulness or correctness issues (e.g., bad code, poor explanation)
             "A": { // The result for The Response A.
                 "type": int // (0 - 3): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "N/A"
-                "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. 
+                "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
             },
             "B": { // The result for The Response B.
                 "type": int, // (0 - 3): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "N/A"
-                "reason": "..." // please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+                "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
             }
         }
         truthful_and_correct: { // Identify the correctness of any claims in the explanation and whether the code (if any) is correct and useful.
             "A": { // The result for The Response A.
                 "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-                "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. 
+                "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
             },
             "B": { // The result for The Response B.
                 "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-                "reason": "..." // please describe in 25 - 40 words. Please don't use any type of passive in the sentences. 
+                "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
             }
         }
         well_written: { //Identify whether the answer uses high-quality prose that’s well-organized and easy to read, and whether the included code, if any, is reasonably formatted and includes sufficient and accurate documentation.
             "A": { // The result for The Response A.
                 "type": int // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
-                "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. 
+                "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
             },
             "B": { // The result for The Response B.
                 "type": int, // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
-                "reason": "..." // please describe in 25 - 40 words. Please don't use any type of passive in the sentences. please describe in 25 - 40 words.
+                "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
             }
         }
         "sxs": {
@@ -402,11 +402,11 @@ The important things are
         "overall_quality": {
             "A": { // The result for The Response A.
                 "type": int // (0 - 4): 0 - "Amazing", 1 - "Pretty Good", 2 - "Okay", 3 - "Pretty Bad", 4 - "Horrible"
-                "reason": ... // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences. 
+                "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
             },
             "B": { // The result for The Response B.
                 "type": int // (0 - 4): 0 - "Amazing", 1 - "Pretty Good", 2 - "Okay", 3 - "Pretty Bad", 4 - "Horrible"
-                "reason": "..." // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+                "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
             }
         }
     }
@@ -453,21 +453,21 @@ The output is json format
     "verbose": {
         "A": { // The result for The Response A.
             "type": int // (1 - 3): 1- "Too verbose", 2 - "Just Right", 3 - "Too short"
-            "reason": ... // If the type is (1) Just Right, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. 
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         },
         "B": { // The result for The Response B.
             "type": int, // int // (1 - 3): 1 - "Too verbose", 2 - "Just Right", 3 - "Too short"
-            "reason": "..." // please describe in 25 - 40 words. Please don't use any type of passive in the sentences. 
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         }
     }
     "safe_and_harmless": {
         "A": { // The result for The Response A.
             "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-            "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. 
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         },
         "B": { // The result for The Response B.
             "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-            "reason": "..." // please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         }
     }
 }
@@ -495,11 +495,11 @@ The output is json format
     "overall_quality": {
         "A": { // The result for The Response A.
             "type": int // (0 - 4): 0 - "Amazing", 1 - "Pretty Good", 2 - "Okay", 3 - "Pretty Bad", 4 - "Horrible"
-            "reason": ... // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences. 
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         },
         "B": { // The result for The Response B.
             "type": int // (0 - 4): 0 - "Amazing", 1 - "Pretty Good", 2 - "Okay", 3 - "Pretty Bad", 4 - "Horrible"
-            "reason": "..." // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         }
     }
 }

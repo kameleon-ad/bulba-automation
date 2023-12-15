@@ -27,11 +27,11 @@ The output is json format
     truthful_and_correct: {
         "A": { // The result for The Response A.
             "type": int // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-            "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            "reason": ... // Please don't use any type of passive in the sentences. Please describe in 25 - 40 words.
         },
         "B": { // The result for The Response B.
             "type": int, // (0 - 4): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues", 3 - "Cannot Assess", 4 - "N/A"
-            "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+            "reason": "..." // Please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
         }
     }
 }
@@ -59,11 +59,11 @@ The output is json format
     "well_written": {
         "A": { // The result for The Response A.
             "type": int // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
-            "reason": ... // If the type is (0) No Issues, in that case, there is no need to use "reason" field. Also "B" is same with this. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences.
+            "reason": ... // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         },
         "B": { // The result for The Response B.
             "type": int, // (0 - 2): 0 - "No Issues", 1 - "Minor Issues", 2 - "Major Issues"
-            "reason": "..." // If the type is not No Issues, in that case please describe in 25 - 40 words. Please don't use any type of passive in the sentences. If the type is not Just Right, in that case please describe in 25 - 40 words.
+            "reason": "..." // Please don't use any type of passive in the sentences. Describe in 25 - 40 words.
         }
     }
 }

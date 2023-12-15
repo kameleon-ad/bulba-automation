@@ -53,7 +53,7 @@ Circumference of c2: 107.139
 ```
 
 
-This program demonstrates the basic principles of object-oriented programming in C++, showcasing how to define a simple class, create instances of the class, and use member functions to perform calculations related to the class's properties. In this case, it calculates the area and circumference of circles based on the provided radii. 
+This program demonstrates the basic principles of object-oriented programming in C++, showcasing how to define a simple class, create instances of the class, and use member functions to perform calculations related to the class's properties. In this case, it calculates the area and circumference of circles based on the provided radii.
 
 Let's explain how the `Circle` class in the provided program demonstrates the key concepts of classes in C++:
 

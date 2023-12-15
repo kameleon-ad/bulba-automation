@@ -25,8 +25,8 @@ def extract_numbers(pdf_file):
     numbers = []
     for match in re.finditer(r'\d{3} \d{12}', text):
         numbers.append(match.group())
-        
-    print(numbers)  
+
+    print(numbers)
     return numbers
 
 if __name__ == '__main__':
