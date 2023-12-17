@@ -21,6 +21,7 @@ Use the following rubric:
 """
 TRUTHFUL_AND_CORRECT_QUESTION = """
 I gave you two paragraph (A and B).
+If the response mentions code output, check for validation.
 Please determine if the paragraphs are truthful and correct.
 The output is json format
 {
